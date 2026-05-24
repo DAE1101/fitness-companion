@@ -515,17 +515,17 @@ export default function FitnessCompanion() {
   const [unit,   setUnit  ] = useState("imperial");
 
   // Profile
-  const [gender,     setGender    ] = useState("female");
-  const [age,        setAge       ] = useState(30);
-  const [heightFt,   setHeightFt  ] = useState(5);
-  const [heightIn,   setHeightIn  ] = useState(5);
-  const [heightCm,   setHeightCm  ] = useState(165);
-  const [weightLbs,  setWeightLbs ] = useState(175);
-  const [weightKg,   setWeightKg  ] = useState(79);
-  const [goalLbs,    setGoalLbs   ] = useState(140);
-  const [goalKg,     setGoalKg    ] = useState(63);
-  const [activityIdx,setActivityIdx]=useState(2);
-  const [experience, setExperience] = useState("beginner");
+  const [gender,     setGender    ] = useState(null);
+  const [age,        setAge       ] = useState("");
+  const [heightFt,   setHeightFt  ] = useState("");
+  const [heightIn,   setHeightIn  ] = useState("");
+  const [heightCm,   setHeightCm  ] = useState("");
+  const [weightLbs,  setWeightLbs ] = useState("");
+  const [weightKg,   setWeightKg  ] = useState("");
+  const [goalLbs,    setGoalLbs   ] = useState("");
+  const [goalKg,     setGoalKg    ] = useState("");
+  const [activityIdx,setActivityIdx]=useState(null);
+  const [experience, setExperience] = useState(null);
 
   // Goal
   const [goal, setGoal] = useState(null);
@@ -537,14 +537,15 @@ export default function FitnessCompanion() {
   const goalObj = GOALS.find(g=>g.id===goal);
 
   function handleCalculate(){
-    const hCm = unit==="imperial" ? ftInToCm(heightFt,heightIn) : heightCm;
-    const wKg  = unit==="imperial" ? lbsToKg(weightLbs) : weightKg;
-    let gKg   = unit==="imperial" ? lbsToKg(goalLbs) : goalKg;
+    const hCm = unit==="imperial" ? ftInToCm(+heightFt||0, +heightIn||0) : +heightCm||0;
+    const wKg  = unit==="imperial" ? lbsToKg(+weightLbs||0) : +weightKg||0;
+    let gKg   = unit==="imperial" ? lbsToKg(+goalLbs||0) : +goalKg||0;
 
-    if(goal==="gain") gKg = wKg + (unit==="imperial" ? lbsToKg(goalLbs - weightLbs) : goalKg - weightKg);
+    if(!gender||!age||!hCm||!wKg){ alert("Please fill in all fields before continuing."); return; }
+    if(goal==="gain") gKg = wKg + (unit==="imperial" ? lbsToKg((+goalLbs||0) - (+weightLbs||0)) : (+goalKg||0) - (+weightKg||0));
 
     const m = calcMacros({ gender, age, heightCm:hCm, weightKg:wKg, goalWeightKg:gKg,
-                            activityMult:ACTIVITY[activityIdx].mult, goal });
+                            activityMult:ACTIVITY[activityIdx!==null?activityIdx:1].mult, goal });
     const p = getWorkoutPlan(goal, experience);
     setMacros(m);
     setWoPlan(p);
@@ -599,7 +600,7 @@ export default function FitnessCompanion() {
           <div>
             <Label>Age</Label>
             <select value={age} onChange={e=>setAge(+e.target.value)} style={sel}>
-              {Array.from({length:83},(_,i)=>i+18).map(a=><option key={a} value={a}>{a} yrs</option>)}
+              {[<option key="" value="" disabled>Select age</option>,...Array.from({length:83},(_,i)=>i+18).map(a=><option key={a} value={a}>{a} yrs</option>)]}
             </select>
           </div>
         </div>
@@ -609,10 +610,10 @@ export default function FitnessCompanion() {
           {unit==="imperial"?(
             <div style={{display:"flex",gap:8}}>
               <select value={heightFt} onChange={e=>setHeightFt(+e.target.value)} style={sel}>
-                {[4,5,6,7].map(f=><option key={f} value={f}>{f} ft</option>)}
+                {[<option key="" value="" disabled>ft</option>,...[4,5,6,7].map(f=><option key={f} value={f}>{f} ft</option>)]}
               </select>
               <select value={heightIn} onChange={e=>setHeightIn(+e.target.value)} style={sel}>
-                {Array.from({length:12},(_,i)=>(<option key={i} value={i}>{i} in</option>))}
+                {[<option key="" value="" disabled>in</option>,...Array.from({length:12},(_,i)=>(<option key={i} value={i}>{i} in</option>))]}
               </select>
             </div>
           ):(
