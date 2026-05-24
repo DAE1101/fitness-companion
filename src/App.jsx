@@ -984,14 +984,21 @@ export default function FitnessCompanion() {
       setTimeout(() => {
         try {
           const isGrainFree = restrictions.includes("Grain-Free");
+          const isEggFree = restrictions.includes("Egg-Free");
+          const isDairyFree = restrictions.includes("Dairy-Free");
+          const isNutFree = restrictions.includes("Nut-Free");
           const isKeto = dietPref === "keto";
           const isVegan = dietPref === "vegan";
           const isVegetarian = dietPref === "vegetarian";
 
-          const proteinPool = isVegan ? FOOD_DB.proteins.vegan
-            : isVegetarian ? FOOD_DB.proteins.vegetarian
-            : isKeto ? FOOD_DB.proteins.keto
-            : FOOD_DB.proteins.any;
+          let proteinPool = isVegan ? FOOD_DB.proteins.vegan
+  : isVegetarian ? FOOD_DB.proteins.vegetarian
+  : isKeto ? FOOD_DB.proteins.keto
+  : FOOD_DB.proteins.any;
+
+if(isEggFree) proteinPool = proteinPool.filter(x => !x.item.includes("Egg") && !x.item.includes("egg"));
+if(isDairyFree) proteinPool = proteinPool.filter(x => !x.item.includes("Yogurt") && !x.item.includes("Cottage"));
+if(isNutFree) proteinPool = proteinPool.filter(x => !x.item.includes("Almond") && !x.item.includes("Walnut") && !x.item.includes("Pumpkin") && !x.item.includes("Cashew"));
 
           const carbPool = isKeto ? FOOD_DB.carbs.keto
             : isGrainFree ? FOOD_DB.carbs.grainfree
@@ -1036,7 +1043,10 @@ export default function FitnessCompanion() {
             const veg = availV.length>0 ? availV[Math.floor(Math.random()*availV.length)] : rand(FOOD_DB.veggies);
             usedVeggies.push(veg.item);
 
-            const fat = rand(FOOD_DB.fats.any);
+           let fatPool = [...FOOD_DB.fats.any];
+if(isNutFree) fatPool = fatPool.filter(x => !x.item.includes("Almond") && !x.item.includes("Walnut") && !x.item.includes("Pumpkin") && !x.item.includes("Cashew"));
+if(isDairyFree) fatPool = fatPool.filter(x => !x.item.includes("Butter"));
+const fat = rand(fatPool.length > 0 ? fatPool : FOOD_DB.fats.any);
             const foods = [prot, carb, veg, fat];
 
             const totals = foods.reduce((acc,f)=>({
