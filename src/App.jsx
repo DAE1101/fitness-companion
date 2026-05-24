@@ -5,9 +5,9 @@ import { useState, useEffect, useRef, useCallback } from "react";
 // ═══════════════════════════════════════════════════════════════
 
 const GOALS = [
-  { id:"loss",   label:"Fat Loss",          emoji:"🔥", desc:"Burn fat, preserve muscle, boost metabolism",       color:"#ff7043" },
-  { id:"gain",   label:"Muscle Gain",       emoji:"💪", desc:"Build lean mass, increase strength & size",         color:"#26a69a" },
-  { id:"recomp", label:"Body Recomposition",emoji:"⚡", desc:"Lose fat and gain muscle simultaneously",           color:"#ffb300" },
+  { id:"loss",   label:"Fat Loss",          emoji:"🔥", desc:"Burn fat, preserve muscle, boost metabolism",       color:"#e53935" },
+  { id:"gain",   label:"Muscle Gain",       emoji:"💪", desc:"Build lean mass, increase strength & size",         color:"#0097a7" },
+  { id:"recomp", label:"Body Recomposition",emoji:"⚡", desc:"Lose fat and gain muscle simultaneously",           color:"#f9a825" },
 ];
 
 const ACTIVITY = [
@@ -30,16 +30,16 @@ function getWorkoutPlan(goal, experience) {
     return {
       title: "Fat Loss Split",
       subtitle: "HIIT + Strength — Metabolic Focus",
-      color: "#ff7043",
+      color: "#e53935",
       weeklyVolume: "6 days active, 1 rest",
       schedule: [
-        { day:"Mon", type:"lift",  label:"Chest & Triceps",    icon:"💪", color:"#26a69a" },
-        { day:"Tue", type:"hiit",  label:"HIIT Circuit",       icon:"🔥", color:"#ff7043" },
-        { day:"Wed", type:"lift",  label:"Back & Biceps",      icon:"💪", color:"#26a69a" },
-        { day:"Thu", type:"hiit",  label:"HIIT Circuit",       icon:"🔥", color:"#ff7043" },
-        { day:"Fri", type:"lift",  label:"Legs & Shoulders",   icon:"💪", color:"#26a69a" },
-        { day:"Sat", type:"hiit",  label:"HIIT Circuit",       icon:"🔥", color:"#ff7043" },
-        { day:"Sun", type:"rest",  label:"Rest & Recovery",    icon:"😴", color:"#8a7560" },
+        { day:"Mon", type:"lift",  label:"Chest & Triceps",    icon:"💪", color:"#0097a7" },
+        { day:"Tue", type:"hiit",  label:"HIIT Circuit",       icon:"🔥", color:"#e53935" },
+        { day:"Wed", type:"lift",  label:"Back & Biceps",      icon:"💪", color:"#0097a7" },
+        { day:"Thu", type:"hiit",  label:"HIIT Circuit",       icon:"🔥", color:"#e53935" },
+        { day:"Fri", type:"lift",  label:"Legs & Shoulders",   icon:"💪", color:"#0097a7" },
+        { day:"Sat", type:"hiit",  label:"HIIT Circuit",       icon:"🔥", color:"#e53935" },
+        { day:"Sun", type:"rest",  label:"Rest & Recovery",    icon:"😴", color:"#5a7299" },
       ],
       notes: [
         "10 min rebounder warm-up before every session",
@@ -57,24 +57,24 @@ function getWorkoutPlan(goal, experience) {
     return {
       title: "Muscle Gain Split",
       subtitle: isAdv ? "PPL Double Split — High Volume" : "Push / Pull / Legs",
-      color: "#26a69a",
+      color: "#0097a7",
       weeklyVolume: isAdv ? "6 days lifting, 1 rest" : "5 days active, 2 rest",
       schedule: isAdv ? [
-        { day:"Mon", type:"lift", label:"Push (Chest / Shoulders / Tri)", icon:"💪", color:"#26a69a" },
-        { day:"Tue", type:"lift", label:"Pull (Back / Biceps)",           icon:"💪", color:"#26a69a" },
-        { day:"Wed", type:"lift", label:"Legs",                           icon:"🦵", color:"#ffb300" },
-        { day:"Thu", type:"lift", label:"Push (Volume Day)",              icon:"💪", color:"#26a69a" },
-        { day:"Fri", type:"lift", label:"Pull (Volume Day)",              icon:"💪", color:"#26a69a" },
-        { day:"Sat", type:"lift", label:"Legs + Weak Points",             icon:"🦵", color:"#ffb300" },
-        { day:"Sun", type:"rest", label:"Rest & Recovery",                icon:"😴", color:"#8a7560" },
+        { day:"Mon", type:"lift", label:"Push (Chest / Shoulders / Tri)", icon:"💪", color:"#0097a7" },
+        { day:"Tue", type:"lift", label:"Pull (Back / Biceps)",           icon:"💪", color:"#0097a7" },
+        { day:"Wed", type:"lift", label:"Legs",                           icon:"🦵", color:"#f9a825" },
+        { day:"Thu", type:"lift", label:"Push (Volume Day)",              icon:"💪", color:"#0097a7" },
+        { day:"Fri", type:"lift", label:"Pull (Volume Day)",              icon:"💪", color:"#0097a7" },
+        { day:"Sat", type:"lift", label:"Legs + Weak Points",             icon:"🦵", color:"#f9a825" },
+        { day:"Sun", type:"rest", label:"Rest & Recovery",                icon:"😴", color:"#5a7299" },
       ] : [
-        { day:"Mon", type:"lift", label:"Push (Chest / Shoulders / Tri)", icon:"💪", color:"#26a69a" },
-        { day:"Tue", type:"lift", label:"Pull (Back / Biceps)",           icon:"💪", color:"#26a69a" },
-        { day:"Wed", type:"rest", label:"Active Recovery / Walk",         icon:"🚶", color:"#8a7560" },
-        { day:"Thu", type:"lift", label:"Legs",                           icon:"🦵", color:"#ffb300" },
-        { day:"Fri", type:"lift", label:"Upper Body (Strength Focus)",    icon:"💪", color:"#26a69a" },
+        { day:"Mon", type:"lift", label:"Push (Chest / Shoulders / Tri)", icon:"💪", color:"#0097a7" },
+        { day:"Tue", type:"lift", label:"Pull (Back / Biceps)",           icon:"💪", color:"#0097a7" },
+        { day:"Wed", type:"rest", label:"Active Recovery / Walk",         icon:"🚶", color:"#5a7299" },
+        { day:"Thu", type:"lift", label:"Legs",                           icon:"🦵", color:"#f9a825" },
+        { day:"Fri", type:"lift", label:"Upper Body (Strength Focus)",    icon:"💪", color:"#0097a7" },
         { day:"Sat", type:"cardio",label:"Light Cardio 30 min",          icon:"🚴", color:"#a29bfe" },
-        { day:"Sun", type:"rest", label:"Rest & Recovery",                icon:"😴", color:"#8a7560" },
+        { day:"Sun", type:"rest", label:"Rest & Recovery",                icon:"😴", color:"#5a7299" },
       ],
       notes: [
         "No HIIT — high intensity cardio blunts hypertrophy signals",
@@ -92,16 +92,16 @@ function getWorkoutPlan(goal, experience) {
   return {
     title: "Recomposition Split",
     subtitle: "Strength + Moderate Cardio — Balanced",
-    color: "#ffb300",
+    color: "#f9a825",
     weeklyVolume: "6 days active, 1 rest",
     schedule: [
-      { day:"Mon", type:"lift",   label:"Upper Body Strength",    icon:"💪", color:"#26a69a" },
+      { day:"Mon", type:"lift",   label:"Upper Body Strength",    icon:"💪", color:"#0097a7" },
       { day:"Tue", type:"cardio", label:"Moderate Cardio 35 min", icon:"🚴", color:"#a29bfe" },
-      { day:"Wed", type:"lift",   label:"Lower Body Strength",    icon:"🦵", color:"#ffb300" },
+      { day:"Wed", type:"lift",   label:"Lower Body Strength",    icon:"🦵", color:"#f9a825" },
       { day:"Thu", type:"cardio", label:"Moderate Cardio 35 min", icon:"🚴", color:"#a29bfe" },
-      { day:"Fri", type:"lift",   label:"Full Body Compound",     icon:"💪", color:"#26a69a" },
-      { day:"Sat", type:"hiit",   label:"HIIT Circuit (2 rounds)", icon:"🔥", color:"#ff7043" },
-      { day:"Sun", type:"rest",   label:"Rest & Recovery",        icon:"😴", color:"#8a7560" },
+      { day:"Fri", type:"lift",   label:"Full Body Compound",     icon:"💪", color:"#0097a7" },
+      { day:"Sat", type:"hiit",   label:"HIIT Circuit (2 rounds)", icon:"🔥", color:"#e53935" },
+      { day:"Sun", type:"rest",   label:"Rest & Recovery",        icon:"😴", color:"#5a7299" },
     ],
     notes: [
       "Maintenance calories — nutrient timing matters here",
@@ -192,8 +192,8 @@ function longRestBeep(ctx){beep(ctx,330,.4,.5,0);beep(ctx,330,.4,.5,.5);beep(ctx
 const TIMER_WORKOUTS = {
   hiit: {
     id:"hiit", label:"HIIT", emoji:"🔥",
-    accentWork:"#ff7043", accentRest:"#40c4ff", accentRoundRest:"#ff6d00",
-    bgWork:"#2e1510", bgRest:"#1a1008", bgRoundRest:"#251a0e", bgIdle:"#1a1008",
+    accentWork:"#e53935", accentRest:"#0091ea", accentRoundRest:"#ff6d00",
+    bgWork:"#ffe8e8", bgRest:"#f0f6ff", bgRoundRest:"#ffffff", bgIdle:"#f0f6ff",
     defaultWork:40, defaultRest:20, defaultRounds:4, defaultRoundRest:180,
     restBetween:true,
     exercises:[
@@ -207,8 +207,8 @@ const TIMER_WORKOUTS = {
   },
   abs: {
     id:"abs", label:"ABS", emoji:"💫",
-    accentWork:"#e040fb", accentRest:"#f77f00", accentRoundRest:"#e040fb",
-    bgWork:"#2a1e10", bgRest:"#251a0e", bgRoundRest:"#2a1e10", bgIdle:"#1a1008",
+    accentWork:"#d500f9", accentRest:"#f77f00", accentRoundRest:"#d500f9",
+    bgWork:"#f8faff", bgRest:"#ffffff", bgRoundRest:"#f8faff", bgIdle:"#f0f6ff",
     defaultWork:60, defaultRest:0, defaultRounds:2, defaultRoundRest:60,
     restBetween:false,
     exercises:[
@@ -232,17 +232,17 @@ function MacroRing({label,value,unit,color,pct}){
     <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:6}}>
       <div style={{position:"relative",width:80,height:80}}>
         <svg width="80" height="80" style={{transform:"rotate(-90deg)"}}>
-          <circle cx="40" cy="40" r={r} fill="none" stroke="#1e2530" strokeWidth="8"/>
+          <circle cx="40" cy="40" r={r} fill="none" stroke="#dde8f8" strokeWidth="8"/>
           <circle cx="40" cy="40" r={r} fill="none" stroke={color} strokeWidth="8"
             strokeDasharray={circ} strokeDashoffset={circ*(1-pct)} strokeLinecap="round"
             style={{transition:"stroke-dashoffset 1s cubic-bezier(.4,0,.2,1)"}}/>
         </svg>
         <div style={{position:"absolute",inset:0,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center"}}>
-          <span style={{fontFamily:"'Bebas Neue',cursive",fontSize:15,color:"#fdf3e3",lineHeight:1}}>{value}</span>
-          <span style={{fontFamily:"'DM Mono',monospace",fontSize:9,color:"#c4a882",lineHeight:1}}>{unit}</span>
+          <span style={{fontFamily:"'Bebas Neue',cursive",fontSize:15,color:"#1a2e4a",lineHeight:1}}>{value}</span>
+          <span style={{fontFamily:"'DM Mono',monospace",fontSize:9,color:"#2c4a6e",lineHeight:1}}>{unit}</span>
         </div>
       </div>
-      <span style={{fontFamily:"'DM Mono',monospace",fontSize:10,color:"#c4a882",letterSpacing:1,textTransform:"uppercase"}}>{label}</span>
+      <span style={{fontFamily:"'DM Mono',monospace",fontSize:10,color:"#2c4a6e",letterSpacing:1,textTransform:"uppercase"}}>{label}</span>
     </div>
   );
 }
@@ -353,12 +353,12 @@ function WorkoutTimer({allowedModes}){
     <div style={{minHeight:"60vh",background:bg,transition:"background .8s",display:"flex",flexDirection:"column",alignItems:"center",padding:"20px 16px 36px",borderRadius:20}}>
       {/* Mode tabs */}
       {allowedModes.length>1&&(
-        <div style={{display:"flex",background:"#160f06",borderRadius:10,padding:3,gap:3,marginBottom:16,width:"100%",maxWidth:400}}>
+        <div style={{display:"flex",background:"#e8f0fe",borderRadius:10,padding:3,gap:3,marginBottom:16,width:"100%",maxWidth:400}}>
           {allowedModes.map(m=>{
             const w=TIMER_WORKOUTS[m];
             return(<button key={m} onClick={()=>{ if(isIdle)setTimerMode(m); }}
               style={{flex:1,padding:"10px 0",borderRadius:8,border:timerMode===m?`1px solid ${w.accentWork}44`:"1px solid transparent",
-                background:timerMode===m?"#3a2a16":"transparent",color:timerMode===m?w.accentWork:"#8a7560",
+                background:timerMode===m?"#c5d8f5":"transparent",color:timerMode===m?w.accentWork:"#5a7299",
                 fontFamily:"'Bebas Neue',cursive",fontSize:14,letterSpacing:2,cursor:"pointer",transition:"all .2s"}}>
               {w.emoji} {w.label}
             </button>);
@@ -370,30 +370,30 @@ function WorkoutTimer({allowedModes}){
       <div style={{width:"100%",maxWidth:400,display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}}>
         <div>
           <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:24,color:ac,letterSpacing:3,lineHeight:1,transition:"color .5s"}}>{workout.label}</div>
-          <div style={{fontFamily:"'DM Mono',monospace",fontSize:10,color:"#6b5a45",letterSpacing:2}}>TIMER</div>
+          <div style={{fontFamily:"'DM Mono',monospace",fontSize:10,color:"#7a9abf",letterSpacing:2}}>TIMER</div>
         </div>
         {!isIdle&&!isComplete&&(<div style={{textAlign:"center"}}>
-          <div style={{fontFamily:"'DM Mono',monospace",fontSize:10,color:"#6b5a45",letterSpacing:2}}>ROUND</div>
-          <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:22,color:"#c4a882"}}>{round}<span style={{color:"#6b5a45"}}>/{cfg.rounds}</span></div>
+          <div style={{fontFamily:"'DM Mono',monospace",fontSize:10,color:"#7a9abf",letterSpacing:2}}>ROUND</div>
+          <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:22,color:"#2c4a6e"}}>{round}<span style={{color:"#7a9abf"}}>/{cfg.rounds}</span></div>
         </div>)}
         <button onClick={()=>setShowSettings(s=>!s)}
-          style={{background:showSettings?"#3d2e1a":"transparent",border:"1px solid #3d2e1a",borderRadius:8,padding:"7px 11px",color:"#8a7560",fontFamily:"'Bebas Neue',cursive",fontSize:11,letterSpacing:1,cursor:"pointer"}}>
+          style={{background:showSettings?"#c5d8f5":"transparent",border:"1px solid #c5d8f5",borderRadius:8,padding:"7px 11px",color:"#5a7299",fontFamily:"'Bebas Neue',cursive",fontSize:11,letterSpacing:1,cursor:"pointer"}}>
           {showSettings?"CLOSE":"SET"}
         </button>
       </div>
 
       {/* Settings */}
-      {showSettings&&(<div style={{width:"100%",maxWidth:400,background:"#251a0e",border:"1px solid #3d2e1a",borderRadius:14,padding:18,marginBottom:16}}>
+      {showSettings&&(<div style={{width:"100%",maxWidth:400,background:"#ffffff",border:"1px solid #dde8f8",boxShadow:"0 2px 8px rgba(26,100,200,.06)",borderRadius:14,padding:18,marginBottom:16}}>
         {sliders.map(s=>{
           const val=cfg[s.key],pct=((val-s.min)/(s.max-s.min))*100;
           return(<div key={s.key} style={{marginBottom:12}}>
             <div style={{display:"flex",justifyContent:"space-between",marginBottom:4}}>
-              <span style={{fontFamily:"'DM Mono',monospace",fontSize:11,color:"#c4a882"}}>{s.label}</span>
+              <span style={{fontFamily:"'DM Mono',monospace",fontSize:11,color:"#2c4a6e"}}>{s.label}</span>
               <span style={{fontFamily:"'Bebas Neue',cursive",fontSize:15,color:ac}}>{s.fmt?s.fmt(val):`${val} ${s.unit}`}</span>
             </div>
             <input type="range" min={s.min} max={s.max} value={val}
               onChange={e=>setSettings(prev=>({...prev,[timerMode]:{...prev[timerMode],[s.key]:+e.target.value}}))}
-              style={{width:"100%",background:`linear-gradient(to right,${ac} 0%,${ac} ${pct}%,#3d2e1a ${pct}%,#3d2e1a 100%)`}}/>
+              style={{width:"100%",background:`linear-gradient(to right,${ac} 0%,${ac} ${pct}%,#c5d8f5 ${pct}%,#c5d8f5 100%)`}}/>
             <style>{`input[type=range]::-webkit-slider-thumb{background:${ac};-webkit-appearance:none;width:15px;height:15px;border-radius:50%;}`}</style>
           </div>);
         })}
@@ -402,27 +402,27 @@ function WorkoutTimer({allowedModes}){
       {/* Ring */}
       <div style={{position:"relative",width:230,height:230,marginBottom:12}}>
         <svg width="230" height="230" style={{transform:"rotate(-90deg)"}}>
-          <circle cx="115" cy="115" r="100" fill="none" stroke="#3d2e1a" strokeWidth="9"/>
+          <circle cx="115" cy="115" r="100" fill="none" stroke="#c5d8f5" strokeWidth="9"/>
           <circle cx="115" cy="115" r="100" fill="none" stroke={ac} strokeWidth="9"
             strokeDasharray={2*Math.PI*100} strokeDashoffset={2*Math.PI*100*(1-pct)}
             strokeLinecap="round" style={{transition:"stroke-dashoffset .9s linear,stroke .5s"}}/>
         </svg>
         <div style={{position:"absolute",inset:0,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center"}}>
           {isIdle?(<div style={{textAlign:"center"}}>
-            <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:16,color:"#6b5a45",letterSpacing:3}}>READY</div>
+            <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:16,color:"#7a9abf",letterSpacing:3}}>READY</div>
             <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:58,color:ac,lineHeight:1}}>{cfg.work}</div>
-            <div style={{fontFamily:"'DM Mono',monospace",fontSize:11,color:"#6b5a45",letterSpacing:2}}>SECONDS</div>
+            <div style={{fontFamily:"'DM Mono',monospace",fontSize:11,color:"#7a9abf",letterSpacing:2}}>SECONDS</div>
           </div>):isComplete?(<div style={{textAlign:"center"}}>
             <div style={{fontSize:36}}>🏆</div>
             <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:26,color:"#ffd700",letterSpacing:2,marginTop:6}}>DONE!</div>
           </div>):isRoundRest?(<div style={{textAlign:"center"}}>
             <div style={{fontFamily:"'DM Mono',monospace",fontSize:10,color:`${workout.accentRoundRest}88`,letterSpacing:3}}>{isPaused?"PAUSED":"ROUND REST"}</div>
             <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:52,color:workout.accentRoundRest,lineHeight:1,letterSpacing:-2}}>{fmt(timeLeft)}</div>
-            <div style={{fontFamily:"'DM Mono',monospace",fontSize:10,color:"#6b5a45",letterSpacing:2}}>RECOVER</div>
+            <div style={{fontFamily:"'DM Mono',monospace",fontSize:10,color:"#7a9abf",letterSpacing:2}}>RECOVER</div>
           </div>):(<div style={{textAlign:"center"}}>
             <div style={{fontFamily:"'DM Mono',monospace",fontSize:10,color:isWork?`${workout.accentWork}88`:`${workout.accentRest}88`,letterSpacing:3}}>{isPaused?"PAUSED":isWork?"WORK":"REST"}</div>
             <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:72,color:ac,lineHeight:1,letterSpacing:-2,transition:"color .5s"}}>{timeLeft}</div>
-            <div style={{fontFamily:"'DM Mono',monospace",fontSize:10,color:"#6b5a45",letterSpacing:2}}>SECONDS</div>
+            <div style={{fontFamily:"'DM Mono',monospace",fontSize:10,color:"#7a9abf",letterSpacing:2}}>SECONDS</div>
           </div>)}
         </div>
       </div>
@@ -433,21 +433,21 @@ function WorkoutTimer({allowedModes}){
           <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:22,color:workout.accentRoundRest,letterSpacing:2}}>ROUND {round-1} COMPLETE</div>
           <div style={{fontFamily:"'DM Mono',monospace",fontSize:11,color:`${workout.accentRoundRest}88`,marginTop:3}}>Next: <span style={{color:workout.accentRoundRest}}>{exList[0].name}</span></div>
         </>):isRest?(<>
-          <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:28,color:"#fdf3e3",letterSpacing:2}}>REST</div>
+          <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:28,color:"#1a2e4a",letterSpacing:2}}>REST</div>
           <div style={{fontFamily:"'DM Mono',monospace",fontSize:11,color:`${workout.accentRest}88`,marginTop:3}}>Next: <span style={{color:workout.accentRest}}>{nextEx.name}</span></div>
         </>):(<>
-          <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:26,color:"#fdf3e3",letterSpacing:2}}>{currentEx.name}</div>
-          <div style={{fontFamily:"'DM Mono',monospace",fontSize:11,color:"#8a7560",marginTop:3}}>{currentEx.tip}</div>
+          <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:26,color:"#1a2e4a",letterSpacing:2}}>{currentEx.name}</div>
+          <div style={{fontFamily:"'DM Mono',monospace",fontSize:11,color:"#5a7299",marginTop:3}}>{currentEx.tip}</div>
         </>)}
       </div>)}
 
       {/* Progress */}
       {!isIdle&&(<div style={{width:"100%",maxWidth:400,marginBottom:20,marginTop:4}}>
         <div style={{display:"flex",justifyContent:"space-between",marginBottom:5}}>
-          <span style={{fontFamily:"'DM Mono',monospace",fontSize:9,color:"#6b5a45",letterSpacing:2}}>PROGRESS</span>
-          <span style={{fontFamily:"'DM Mono',monospace",fontSize:9,color:"#6b5a45",letterSpacing:2}}>{Math.round(ovPct*100)}%</span>
+          <span style={{fontFamily:"'DM Mono',monospace",fontSize:9,color:"#7a9abf",letterSpacing:2}}>PROGRESS</span>
+          <span style={{fontFamily:"'DM Mono',monospace",fontSize:9,color:"#7a9abf",letterSpacing:2}}>{Math.round(ovPct*100)}%</span>
         </div>
-        <div style={{height:3,background:"#3d2e1a",borderRadius:2}}>
+        <div style={{height:3,background:"#c5d8f5",borderRadius:2}}>
           <div style={{height:"100%",borderRadius:2,background:ac,width:`${ovPct*100}%`,transition:"width 1s linear,background .5s"}}/>
         </div>
       </div>)}
@@ -458,15 +458,15 @@ function WorkoutTimer({allowedModes}){
           style={{flex:1,padding:"16px 0",borderRadius:12,background:ac,color:"#0a0a0a",fontFamily:"'Bebas Neue',cursive",fontSize:20,letterSpacing:3,border:"none",cursor:"pointer",transition:"all .2s"}}>
           START {workout.emoji}
         </button>):isComplete?(<button onClick={reset}
-          style={{flex:1,padding:"16px 0",borderRadius:12,background:"#ffd700",color:"#1a1008",fontFamily:"'Bebas Neue',cursive",fontSize:20,letterSpacing:3,border:"none",cursor:"pointer"}}>
+          style={{flex:1,padding:"16px 0",borderRadius:12,background:"#ffd700",color:"#f0f6ff",fontFamily:"'Bebas Neue',cursive",fontSize:20,letterSpacing:3,border:"none",cursor:"pointer"}}>
           AGAIN
         </button>):(<>
           <button onClick={pauseResume}
-            style={{flex:2,padding:"14px 0",borderRadius:12,background:isPaused?ac:"#3d2e1a",color:isPaused?"#0a0a0a":"#c4a882",fontFamily:"'Bebas Neue',cursive",fontSize:18,letterSpacing:3,border:"none",cursor:"pointer",transition:"all .2s"}}>
+            style={{flex:2,padding:"14px 0",borderRadius:12,background:isPaused?ac:"#c5d8f5",color:isPaused?"#0a0a0a":"#2c4a6e",fontFamily:"'Bebas Neue',cursive",fontSize:18,letterSpacing:3,border:"none",cursor:"pointer",transition:"all .2s"}}>
             {isPaused?"RESUME":"PAUSE"}
           </button>
           <button onClick={reset}
-            style={{flex:1,padding:"14px 0",borderRadius:12,background:"#251a0e",border:"1px solid #3d2e1a",color:"#8a7560",fontFamily:"'Bebas Neue',cursive",fontSize:16,letterSpacing:2,cursor:"pointer"}}>
+            style={{flex:1,padding:"14px 0",borderRadius:12,background:"#ffffff",border:"1px solid #dde8f8",boxShadow:"0 2px 8px rgba(26,100,200,.06)",color:"#5a7299",fontFamily:"'Bebas Neue',cursive",fontSize:16,letterSpacing:2,cursor:"pointer"}}>
             RESET
           </button>
         </>)}
@@ -474,19 +474,19 @@ function WorkoutTimer({allowedModes}){
 
       {/* Exercise list */}
       <div style={{width:"100%",maxWidth:400}}>
-        <div style={{fontFamily:"'DM Mono',monospace",fontSize:9,color:"#6b5a45",letterSpacing:3,marginBottom:10}}>EXERCISES</div>
+        <div style={{fontFamily:"'DM Mono',monospace",fontSize:9,color:"#7a9abf",letterSpacing:3,marginBottom:10}}>EXERCISES</div>
         <div style={{display:"flex",flexDirection:"column",gap:5}}>
           {exList.map((ex,i)=>{
             const done=!isIdle&&i<exIdx&&!isComplete&&!isRoundRest;
             const allDone=isComplete;
             const cur=!isIdle&&i===exIdx&&!isComplete&&!isRoundRest;
-            return(<div key={i} style={{display:"flex",alignItems:"center",gap:10,padding:"9px 12px",borderRadius:9,background:cur?`${ac}18`:"#251a0e",border:`1px solid ${cur?ac+"44":(done||allDone)?"#3a2a16":"#3d2e1a"}`,opacity:done?.4:1,transition:"all .3s"}}>
-              <div style={{width:26,height:26,borderRadius:"50%",background:cur?ac:(done||allDone)?"#2e2010":"#3d2e1a",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,transition:"all .3s"}}>
-                {(done||allDone)?<span style={{color:workout.accentWork,fontSize:12}}>✓</span>:<span style={{fontFamily:"'Bebas Neue',cursive",color:cur?"#0a0a0a":"#8a7560",fontSize:12}}>{i+1}</span>}
+            return(<div key={i} style={{display:"flex",alignItems:"center",gap:10,padding:"9px 12px",borderRadius:9,background:cur?`${ac}18`:"#ffffff",border:`1px solid ${cur?ac+"44":(done||allDone)?"#c5d8f5":"#c5d8f5"}`,opacity:done?.4:1,transition:"all .3s"}}>
+              <div style={{width:26,height:26,borderRadius:"50%",background:cur?ac:(done||allDone)?"#fff8f0":"#c5d8f5",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,transition:"all .3s"}}>
+                {(done||allDone)?<span style={{color:workout.accentWork,fontSize:12}}>✓</span>:<span style={{fontFamily:"'Bebas Neue',cursive",color:cur?"#0a0a0a":"#5a7299",fontSize:12}}>{i+1}</span>}
               </div>
               <div style={{flex:1}}>
-                <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:14,color:cur?ac:"#c4a882",letterSpacing:1,transition:"color .3s"}}>{ex.name}</div>
-                <div style={{fontFamily:"'DM Mono',monospace",fontSize:9,color:"#6b5a45"}}>{ex.tip}</div>
+                <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:14,color:cur?ac:"#2c4a6e",letterSpacing:1,transition:"color .3s"}}>{ex.name}</div>
+                <div style={{fontFamily:"'DM Mono',monospace",fontSize:9,color:"#7a9abf"}}>{ex.tip}</div>
               </div>
               {cur&&<div style={{width:5,height:5,borderRadius:"50%",background:ac,animation:"pulse 1s ease infinite"}}/>}
             </div>);
@@ -502,11 +502,11 @@ function WorkoutTimer({allowedModes}){
 // ═══════════════════════════════════════════════════════════════
 const SCREENS = ["profile","goals","results","timer"];
 
-const inp={background:"#1e1409",border:"1px solid #4a3520",borderRadius:8,color:"#fdf3e3",fontFamily:"'DM Mono',monospace",fontSize:13,padding:"10px 12px",outline:"none",width:"100%",boxSizing:"border-box"};
+const inp={background:"#ffffff",border:"1px solid #b8cef0",borderRadius:8,color:"#1a2e4a",fontFamily:"'DM Mono',monospace",fontSize:13,padding:"10px 12px",outline:"none",width:"100%",boxSizing:"border-box"};
 const sel={...inp,appearance:"none"};
-const Label=({children})=><label style={{fontFamily:"'DM Mono',monospace",fontSize:10,color:"#c4a882",letterSpacing:2,textTransform:"uppercase",display:"block",marginBottom:6}}>{children}</label>;
+const Label=({children})=><label style={{fontFamily:"'DM Mono',monospace",fontSize:10,color:"#2c4a6e",letterSpacing:2,textTransform:"uppercase",display:"block",marginBottom:6}}>{children}</label>;
 const Section=({title,children})=>(<div style={{marginBottom:22}}>
-  <div style={{fontFamily:"'DM Mono',monospace",fontSize:10,color:"#8a7560",letterSpacing:3,textTransform:"uppercase",marginBottom:12,paddingBottom:6,borderBottom:"1px solid #3d2e1a"}}>{title}</div>
+  <div style={{fontFamily:"'DM Mono',monospace",fontSize:10,color:"#5a7299",letterSpacing:3,textTransform:"uppercase",marginBottom:12,paddingBottom:6,borderBottom:"1px solid #c5d8f5"}}>{title}</div>
   {children}
 </div>);
 
@@ -572,15 +572,15 @@ export default function FitnessCompanion() {
   const ProfileScreen=()=>(
     <div>
       <div style={{textAlign:"center",marginBottom:28}}>
-        <div style={{fontFamily:"'DM Mono',monospace",fontSize:10,color:"#e8943a",letterSpacing:3,marginBottom:8}}>STEP 1 OF 2</div>
-        <h2 style={{fontFamily:"'Bebas Neue',cursive",fontSize:36,color:"#fdf3e3",letterSpacing:2,lineHeight:1}}>YOUR PROFILE</h2>
-        <p style={{fontFamily:"'DM Mono',monospace",fontSize:11,color:"#8a7560",marginTop:8}}>Tell us about your body composition</p>
+        <div style={{fontFamily:"'DM Mono',monospace",fontSize:10,color:"#1a7fe8",letterSpacing:3,marginBottom:8}}>STEP 1 OF 2</div>
+        <h2 style={{fontFamily:"'Bebas Neue',cursive",fontSize:36,color:"#1a2e4a",letterSpacing:2,lineHeight:1}}>YOUR PROFILE</h2>
+        <p style={{fontFamily:"'DM Mono',monospace",fontSize:11,color:"#5a7299",marginTop:8}}>Tell us about your body composition</p>
       </div>
 
       {/* Unit toggle */}
-      <div style={{display:"flex",background:"#160f06",borderRadius:10,padding:3,gap:3,marginBottom:20}}>
+      <div style={{display:"flex",background:"#e8f0fe",borderRadius:10,padding:3,gap:3,marginBottom:20}}>
         {["imperial","metric"].map(u=>(<button key={u} onClick={()=>setUnit(u)}
-          style={{flex:1,padding:"9px 0",borderRadius:8,border:"none",background:unit===u?"#3a2a16":"transparent",color:unit===u?"#e8943a":"#8a7560",fontFamily:"'DM Mono',monospace",fontSize:11,letterSpacing:1,cursor:"pointer",transition:"all .2s"}}>
+          style={{flex:1,padding:"9px 0",borderRadius:8,border:"none",background:unit===u?"#c5d8f5":"transparent",color:unit===u?"#1a7fe8":"#5a7299",fontFamily:"'DM Mono',monospace",fontSize:11,letterSpacing:1,cursor:"pointer",transition:"all .2s"}}>
           {u==="imperial"?"lbs / ft":"kg / cm"}
         </button>))}
       </div>
@@ -591,7 +591,7 @@ export default function FitnessCompanion() {
             <Label>Sex</Label>
             <div style={{display:"flex",gap:6}}>
               {["female","male"].map(g=>(<button key={g} onClick={()=>setGender(g)}
-                style={{flex:1,padding:"10px 0",borderRadius:8,border:`1px solid ${gender===g?"#e8943a44":"#4a3520"}`,background:gender===g?"#3a2a16":"transparent",color:gender===g?"#e8943a":"#c4a882",fontFamily:"'DM Mono',monospace",fontSize:11,letterSpacing:1,textTransform:"capitalize",cursor:"pointer",transition:"all .2s"}}>
+                style={{flex:1,padding:"10px 0",borderRadius:8,border:`1px solid ${gender===g?"#1a7fe844":"#b8cef0"}`,background:gender===g?"#c5d8f5":"transparent",color:gender===g?"#1a7fe8":"#2c4a6e",fontFamily:"'DM Mono',monospace",fontSize:11,letterSpacing:1,textTransform:"capitalize",cursor:"pointer",transition:"all .2s"}}>
                 {g}
               </button>))}
             </div>
@@ -639,9 +639,9 @@ export default function FitnessCompanion() {
       <Section title="Experience Level">
         <div style={{display:"flex",flexDirection:"column",gap:6}}>
           {EXPERIENCE.map(e=>(<button key={e.id} onClick={()=>setExperience(e.id)}
-            style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"11px 14px",borderRadius:9,border:`1px solid ${experience===e.id?"#e8943a44":"#4a3520"}`,background:experience===e.id?"#3a2a16":"transparent",cursor:"pointer",transition:"all .2s"}}>
-            <span style={{fontFamily:"'Bebas Neue',cursive",fontSize:15,color:experience===e.id?"#e8943a":"#c4a882",letterSpacing:1}}>{e.label}</span>
-            <span style={{fontFamily:"'DM Mono',monospace",fontSize:10,color:"#8a7560"}}>{e.desc}</span>
+            style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"11px 14px",borderRadius:9,border:`1px solid ${experience===e.id?"#1a7fe844":"#b8cef0"}`,background:experience===e.id?"#c5d8f5":"transparent",cursor:"pointer",transition:"all .2s"}}>
+            <span style={{fontFamily:"'Bebas Neue',cursive",fontSize:15,color:experience===e.id?"#1a7fe8":"#2c4a6e",letterSpacing:1}}>{e.label}</span>
+            <span style={{fontFamily:"'DM Mono',monospace",fontSize:10,color:"#5a7299"}}>{e.desc}</span>
           </button>))}
         </div>
       </Section>
@@ -649,15 +649,15 @@ export default function FitnessCompanion() {
       <Section title="Activity Level">
         <div style={{display:"flex",flexDirection:"column",gap:6}}>
           {ACTIVITY.map((a,i)=>(<button key={i} onClick={()=>setActivityIdx(i)}
-            style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"11px 14px",borderRadius:9,border:`1px solid ${activityIdx===i?"#e8943a44":"#4a3520"}`,background:activityIdx===i?"#3a2a16":"transparent",cursor:"pointer",transition:"all .2s"}}>
-            <span style={{fontFamily:"'Bebas Neue',cursive",fontSize:15,color:activityIdx===i?"#e8943a":"#c4a882",letterSpacing:1}}>{a.label}</span>
-            <span style={{fontFamily:"'DM Mono',monospace",fontSize:10,color:"#8a7560"}}>{a.desc}</span>
+            style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"11px 14px",borderRadius:9,border:`1px solid ${activityIdx===i?"#1a7fe844":"#b8cef0"}`,background:activityIdx===i?"#c5d8f5":"transparent",cursor:"pointer",transition:"all .2s"}}>
+            <span style={{fontFamily:"'Bebas Neue',cursive",fontSize:15,color:activityIdx===i?"#1a7fe8":"#2c4a6e",letterSpacing:1}}>{a.label}</span>
+            <span style={{fontFamily:"'DM Mono',monospace",fontSize:10,color:"#5a7299"}}>{a.desc}</span>
           </button>))}
         </div>
       </Section>
 
       <button onClick={()=>setScreen("goals")}
-        style={{width:"100%",padding:"16px 0",borderRadius:12,background:"linear-gradient(135deg,#e8943a,#f0a84a)",border:"none",color:"#1c1208",fontFamily:"'Bebas Neue',cursive",fontSize:20,letterSpacing:3,cursor:"pointer",transition:"all .25s"}}>
+        style={{width:"100%",padding:"16px 0",borderRadius:12,background:"linear-gradient(135deg,#1a7fe8,#2389f0)",border:"none",color:"#f0f6ff",fontFamily:"'Bebas Neue',cursive",fontSize:20,letterSpacing:3,cursor:"pointer",transition:"all .25s"}}>
         NEXT: SET YOUR GOAL →
       </button>
     </div>
@@ -667,19 +667,19 @@ export default function FitnessCompanion() {
   const GoalsScreen=()=>(
     <div>
       <div style={{textAlign:"center",marginBottom:28}}>
-        <div style={{fontFamily:"'DM Mono',monospace",fontSize:10,color:"#e8943a",letterSpacing:3,marginBottom:8}}>STEP 2 OF 2</div>
-        <h2 style={{fontFamily:"'Bebas Neue',cursive",fontSize:36,color:"#fdf3e3",letterSpacing:2,lineHeight:1}}>YOUR GOAL</h2>
-        <p style={{fontFamily:"'DM Mono',monospace",fontSize:11,color:"#8a7560",marginTop:8}}>This shapes your entire plan — macros, workouts & timers</p>
+        <div style={{fontFamily:"'DM Mono',monospace",fontSize:10,color:"#1a7fe8",letterSpacing:3,marginBottom:8}}>STEP 2 OF 2</div>
+        <h2 style={{fontFamily:"'Bebas Neue',cursive",fontSize:36,color:"#1a2e4a",letterSpacing:2,lineHeight:1}}>YOUR GOAL</h2>
+        <p style={{fontFamily:"'DM Mono',monospace",fontSize:11,color:"#5a7299",marginTop:8}}>This shapes your entire plan — macros, workouts & timers</p>
       </div>
 
       <div style={{display:"flex",flexDirection:"column",gap:12,marginBottom:28}}>
         {GOALS.map(g=>(<button key={g.id} onClick={()=>setGoal(g.id)}
-          style={{padding:"20px 18px",borderRadius:14,border:`2px solid ${goal===g.id?g.color+"88":"#4a3520"}`,background:goal===g.id?`${g.color}12`:"#251a0e",cursor:"pointer",textAlign:"left",transition:"all .25s"}}>
+          style={{padding:"20px 18px",borderRadius:14,border:`2px solid ${goal===g.id?g.color+"88":"#b8cef0"}`,background:goal===g.id?`${g.color}12`:"#ffffff",cursor:"pointer",textAlign:"left",transition:"all .25s"}}>
           <div style={{display:"flex",alignItems:"center",gap:14}}>
-            <div style={{width:48,height:48,borderRadius:12,background:goal===g.id?`${g.color}22`:"#3d2e1a",display:"flex",alignItems:"center",justifyContent:"center",fontSize:24,flexShrink:0}}>{g.emoji}</div>
+            <div style={{width:48,height:48,borderRadius:12,background:goal===g.id?`${g.color}22`:"#c5d8f5",display:"flex",alignItems:"center",justifyContent:"center",fontSize:24,flexShrink:0}}>{g.emoji}</div>
             <div>
-              <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:22,color:goal===g.id?g.color:"#c4a882",letterSpacing:1,lineHeight:1}}>{g.label}</div>
-              <div style={{fontFamily:"'DM Mono',monospace",fontSize:11,color:"#8a7560",marginTop:4,lineHeight:1.5}}>{g.desc}</div>
+              <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:22,color:goal===g.id?g.color:"#2c4a6e",letterSpacing:1,lineHeight:1}}>{g.label}</div>
+              <div style={{fontFamily:"'DM Mono',monospace",fontSize:11,color:"#5a7299",marginTop:4,lineHeight:1.5}}>{g.desc}</div>
             </div>
             {goal===g.id&&<div style={{marginLeft:"auto",width:10,height:10,borderRadius:"50%",background:g.color,flexShrink:0}}/>}
           </div>
@@ -687,7 +687,7 @@ export default function FitnessCompanion() {
       </div>
 
       {/* What each goal means */}
-      {goal&&(<div style={{background:"#251a0e",border:`1px solid ${goalObj.color}33`,borderRadius:14,padding:18,marginBottom:24}}>
+      {goal&&(<div style={{background:"#ffffff",border:`1px solid ${goalObj.color}33`,borderRadius:14,padding:18,marginBottom:24}}>
         <div style={{fontFamily:"'DM Mono',monospace",fontSize:10,color:goalObj.color,letterSpacing:2,marginBottom:12}}>WHAT THIS MEANS FOR YOU</div>
         {goal==="loss"&&[
           "Caloric deficit of 350–500 kcal/day",
@@ -697,7 +697,7 @@ export default function FitnessCompanion() {
           "Core work after every HIIT session",
         ].map((t,i)=>(<div key={i} style={{display:"flex",gap:10,marginBottom:6}}>
           <div style={{width:4,height:4,borderRadius:"50%",background:goalObj.color,marginTop:6,flexShrink:0}}/>
-          <span style={{fontFamily:"'DM Mono',monospace",fontSize:11,color:"#c4a882",lineHeight:1.6}}>{t}</span>
+          <span style={{fontFamily:"'DM Mono',monospace",fontSize:11,color:"#2c4a6e",lineHeight:1.6}}>{t}</span>
         </div>))}
         {goal==="gain"&&[
           "Caloric surplus of 300 kcal/day (lean bulk)",
@@ -707,7 +707,7 @@ export default function FitnessCompanion() {
           "Push/Pull/Legs split with progressive overload",
         ].map((t,i)=>(<div key={i} style={{display:"flex",gap:10,marginBottom:6}}>
           <div style={{width:4,height:4,borderRadius:"50%",background:goalObj.color,marginTop:6,flexShrink:0}}/>
-          <span style={{fontFamily:"'DM Mono',monospace",fontSize:11,color:"#c4a882",lineHeight:1.6}}>{t}</span>
+          <span style={{fontFamily:"'DM Mono',monospace",fontSize:11,color:"#2c4a6e",lineHeight:1.6}}>{t}</span>
         </div>))}
         {goal==="recomp"&&[
           "Maintenance calories — body reallocates energy",
@@ -717,12 +717,12 @@ export default function FitnessCompanion() {
           "1x HIIT per week — enough to burn fat without blunting gains",
         ].map((t,i)=>(<div key={i} style={{display:"flex",gap:10,marginBottom:6}}>
           <div style={{width:4,height:4,borderRadius:"50%",background:goalObj.color,marginTop:6,flexShrink:0}}/>
-          <span style={{fontFamily:"'DM Mono',monospace",fontSize:11,color:"#c4a882",lineHeight:1.6}}>{t}</span>
+          <span style={{fontFamily:"'DM Mono',monospace",fontSize:11,color:"#2c4a6e",lineHeight:1.6}}>{t}</span>
         </div>))}
       </div>)}
 
       <button onClick={handleCalculate} disabled={!goal}
-        style={{width:"100%",padding:"16px 0",borderRadius:12,background:goal?`linear-gradient(135deg,${goalObj.color},${goalObj.color}bb)`:"#3d2e1a",border:"none",color:goal?"#1c1208":"#8a7560",fontFamily:"'Bebas Neue',cursive",fontSize:20,letterSpacing:3,cursor:goal?"pointer":"not-allowed",transition:"all .25s"}}>
+        style={{width:"100%",padding:"16px 0",borderRadius:12,background:goal?`linear-gradient(135deg,${goalObj.color},${goalObj.color}bb)`:"#c5d8f5",border:"none",color:goal?"#f0f6ff":"#5a7299",fontFamily:"'Bebas Neue',cursive",fontSize:20,letterSpacing:3,cursor:goal?"pointer":"not-allowed",transition:"all .25s"}}>
         {goal?"GENERATE MY PLAN →":"SELECT A GOAL FIRST"}
       </button>
     </div>
@@ -742,80 +742,80 @@ export default function FitnessCompanion() {
           <span style={{fontSize:20}}>{g.emoji}</span>
           <span style={{fontFamily:"'DM Mono',monospace",fontSize:10,color:g.color,letterSpacing:3,textTransform:"uppercase"}}>{g.label}</span>
         </div>
-        <h2 style={{fontFamily:"'Bebas Neue',cursive",fontSize:32,color:"#fdf3e3",letterSpacing:2,lineHeight:1}}>YOUR COMPLETE PLAN</h2>
+        <h2 style={{fontFamily:"'Bebas Neue',cursive",fontSize:32,color:"#1a2e4a",letterSpacing:2,lineHeight:1}}>YOUR COMPLETE PLAN</h2>
       </div>
 
       {/* Calorie card */}
-      <div style={{background:`linear-gradient(135deg,#3d2e1a,#0f1a28)`,border:`1px solid ${g.color}33`,borderRadius:18,padding:"22px 20px",textAlign:"center",marginBottom:16}}>
+      <div style={{background:`linear-gradient(135deg,#c5d8f5,#0f1a28)`,border:`1px solid ${g.color}33`,borderRadius:18,padding:"22px 20px",textAlign:"center",marginBottom:16}}>
         <div style={{fontFamily:"'DM Mono',monospace",fontSize:10,color:g.color,letterSpacing:3,marginBottom:6}}>DAILY CALORIE TARGET</div>
-        <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:64,color:"#fdf3e3",lineHeight:1}}>{macros.targetCalories}</div>
-        <div style={{fontFamily:"'DM Mono',monospace",fontSize:11,color:"#c4a882",marginTop:2}}>kcal / day</div>
-        <div style={{display:"flex",justifyContent:"center",gap:24,marginTop:16,paddingTop:14,borderTop:"1px solid #3a2a16"}}>
-          {[{l:"BMR",v:macros.bmr,c:"#c4a882"},{l:"TDEE",v:macros.tdee,c:"#c4a882"},{l:macros.surplusOrDeficit>0?"Surplus":"Deficit",v:`${macros.surplusOrDeficit>0?"+":""}${macros.surplusOrDeficit}`,c:g.color},
-            ...(macros.weeksToGoal?[{l:"Est. Time",v:`${macros.weeksToGoal}w`,c:"#66bb6a"}]:[])
+        <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:64,color:"#ffffff",lineHeight:1}}>{macros.targetCalories}</div>
+        <div style={{fontFamily:"'DM Mono',monospace",fontSize:11,color:"#2c4a6e",marginTop:2}}>kcal / day</div>
+        <div style={{display:"flex",justifyContent:"center",gap:24,marginTop:16,paddingTop:14,borderTop:"1px solid #c5d8f5"}}>
+          {[{l:"BMR",v:macros.bmr,c:"#2c4a6e"},{l:"TDEE",v:macros.tdee,c:"#2c4a6e"},{l:macros.surplusOrDeficit>0?"Surplus":"Deficit",v:`${macros.surplusOrDeficit>0?"+":""}${macros.surplusOrDeficit}`,c:g.color},
+            ...(macros.weeksToGoal?[{l:"Est. Time",v:`${macros.weeksToGoal}w`,c:"#43a047"}]:[])
           ].map(s=>(<div key={s.l} style={{textAlign:"center"}}>
-            <div style={{fontFamily:"'DM Mono',monospace",fontSize:9,color:"#8a7560"}}>{s.l}</div>
+            <div style={{fontFamily:"'DM Mono',monospace",fontSize:9,color:"#5a7299"}}>{s.l}</div>
             <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:18,color:s.c,letterSpacing:1}}>{s.v}</div>
           </div>))}
         </div>
       </div>
 
       {/* Macro rings */}
-      <div style={{background:"#2a1e10",border:"1px solid #3a2a16",borderRadius:14,padding:"18px 16px",marginBottom:16}}>
-        <div style={{fontFamily:"'DM Mono',monospace",fontSize:9,color:"#8a7560",letterSpacing:2,textTransform:"uppercase",marginBottom:18,textAlign:"center"}}>Daily Macros</div>
+      <div style={{background:"#f8faff",border:"1px solid #dde8f8",boxShadow:"0 2px 8px rgba(26,100,200,.06)",borderRadius:14,padding:"18px 16px",marginBottom:16}}>
+        <div style={{fontFamily:"'DM Mono',monospace",fontSize:9,color:"#5a7299",letterSpacing:2,textTransform:"uppercase",marginBottom:18,textAlign:"center"}}>Daily Macros</div>
         <div style={{display:"flex",justifyContent:"space-around"}}>
-          <MacroRing label="Protein" value={macros.protein} unit="g" color="#66bb6a" pct={protPct}/>
-          <MacroRing label="Carbs"   value={macros.carbs}   unit="g" color="#42a5f5" pct={carbPct}/>
-          <MacroRing label="Fat"     value={macros.fat}     unit="g" color="#e8943a" pct={fatPct}/>
-          <MacroRing label="Fiber"   value={macros.fiber}   unit="g" color="#ab47bc" pct={fibPct}/>
+          <MacroRing label="Protein" value={macros.protein} unit="g" color="#43a047" pct={protPct}/>
+          <MacroRing label="Carbs"   value={macros.carbs}   unit="g" color="#1e88e5" pct={carbPct}/>
+          <MacroRing label="Fat"     value={macros.fat}     unit="g" color="#1a7fe8" pct={fatPct}/>
+          <MacroRing label="Fiber"   value={macros.fiber}   unit="g" color="#8e24aa" pct={fibPct}/>
         </div>
       </div>
 
       {/* Macro cards */}
       <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:16}}>
         {[
-          {label:"Protein",    value:macros.protein, kcal:macros.protein*4, color:"#66bb6a", desc:"Muscle retention & satiety"},
-          {label:"Net Carbs",  value:macros.carbs,   kcal:macros.carbs*4,   color:"#42a5f5", desc:"Energy & brain function"},
-          {label:"Healthy Fats",value:macros.fat,    kcal:macros.fat*9,     color:"#e8943a", desc:"Hormonal balance"},
-          {label:"Fiber",      value:macros.fiber,   kcal:null,             color:"#ab47bc", desc:"Gut health & fullness"},
-        ].map(m=>(<div key={m.label} style={{background:"#2a1e10",border:`1px solid #3a2a16`,borderTop:`2px solid ${m.color}`,borderRadius:12,padding:14}}>
-          <div style={{fontFamily:"'DM Mono',monospace",fontSize:10,color:"#8a7560",marginBottom:4}}>{m.label}</div>
-          <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:28,color:m.color,lineHeight:1}}>{m.value}<span style={{fontSize:13,color:"#8a7560",fontWeight:400}}> g</span></div>
-          {m.kcal&&<div style={{fontFamily:"'DM Mono',monospace",fontSize:10,color:"#8a7560",marginTop:2}}>{m.kcal} kcal</div>}
-          <div style={{fontFamily:"'DM Mono',monospace",fontSize:9,color:"#6b5a45",marginTop:6,lineHeight:1.4}}>{m.desc}</div>
+          {label:"Protein",    value:macros.protein, kcal:macros.protein*4, color:"#43a047", desc:"Muscle retention & satiety"},
+          {label:"Net Carbs",  value:macros.carbs,   kcal:macros.carbs*4,   color:"#1e88e5", desc:"Energy & brain function"},
+          {label:"Healthy Fats",value:macros.fat,    kcal:macros.fat*9,     color:"#1a7fe8", desc:"Hormonal balance"},
+          {label:"Fiber",      value:macros.fiber,   kcal:null,             color:"#8e24aa", desc:"Gut health & fullness"},
+        ].map(m=>(<div key={m.label} style={{background:"#f8faff",border:`1px solid #c5d8f5`,borderTop:`2px solid ${m.color}`,borderRadius:12,padding:14}}>
+          <div style={{fontFamily:"'DM Mono',monospace",fontSize:10,color:"#5a7299",marginBottom:4}}>{m.label}</div>
+          <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:28,color:m.color,lineHeight:1}}>{m.value}<span style={{fontSize:13,color:"#5a7299",fontWeight:400}}> g</span></div>
+          {m.kcal&&<div style={{fontFamily:"'DM Mono',monospace",fontSize:10,color:"#5a7299",marginTop:2}}>{m.kcal} kcal</div>}
+          <div style={{fontFamily:"'DM Mono',monospace",fontSize:9,color:"#7a9abf",marginTop:6,lineHeight:1.4}}>{m.desc}</div>
         </div>))}
       </div>
 
       {/* Weekly schedule */}
-      <div style={{background:"#2a1e10",border:"1px solid #3a2a16",borderRadius:14,padding:"18px 16px",marginBottom:16}}>
+      <div style={{background:"#f8faff",border:"1px solid #dde8f8",boxShadow:"0 2px 8px rgba(26,100,200,.06)",borderRadius:14,padding:"18px 16px",marginBottom:16}}>
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}>
           <div>
             <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:20,color:woPlan.color,letterSpacing:2}}>{woPlan.title}</div>
-            <div style={{fontFamily:"'DM Mono',monospace",fontSize:10,color:"#8a7560",marginTop:2}}>{woPlan.subtitle}</div>
+            <div style={{fontFamily:"'DM Mono',monospace",fontSize:10,color:"#5a7299",marginTop:2}}>{woPlan.subtitle}</div>
           </div>
-          <div style={{fontFamily:"'DM Mono',monospace",fontSize:9,color:"#8a7560",textAlign:"right"}}>{woPlan.weeklyVolume}</div>
+          <div style={{fontFamily:"'DM Mono',monospace",fontSize:9,color:"#5a7299",textAlign:"right"}}>{woPlan.weeklyVolume}</div>
         </div>
         <div style={{display:"flex",flexDirection:"column",gap:6}}>
-          {woPlan.schedule.map((s,i)=>(<div key={i} style={{display:"flex",alignItems:"center",gap:12,padding:"9px 12px",borderRadius:9,background:"#251a0e",border:`1px solid #3d2e1a`}}>
-            <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:13,color:"#8a7560",width:28,flexShrink:0,letterSpacing:1}}>{s.day}</div>
+          {woPlan.schedule.map((s,i)=>(<div key={i} style={{display:"flex",alignItems:"center",gap:12,padding:"9px 12px",borderRadius:9,background:"#ffffff",border:`1px solid #c5d8f5`}}>
+            <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:13,color:"#5a7299",width:28,flexShrink:0,letterSpacing:1}}>{s.day}</div>
             <div style={{width:28,height:28,borderRadius:"50%",background:`${s.color}22`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:14,flexShrink:0}}>{s.icon}</div>
-            <div style={{fontFamily:"'DM Mono',monospace",fontSize:11,color:s.type==="rest"?"#8a7560":"#c4a882"}}>{s.label}</div>
+            <div style={{fontFamily:"'DM Mono',monospace",fontSize:11,color:s.type==="rest"?"#5a7299":"#2c4a6e"}}>{s.label}</div>
             <div style={{marginLeft:"auto",width:6,height:6,borderRadius:"50%",background:s.color,flexShrink:0}}/>
           </div>))}
         </div>
       </div>
 
       {/* Plan notes */}
-      <div style={{background:"#2a1e10",border:`1px solid ${g.color}33`,borderLeft:`3px solid ${g.color}`,borderRadius:14,padding:"16px 18px",marginBottom:16}}>
+      <div style={{background:"#f8faff",border:`1px solid ${g.color}33`,borderLeft:`3px solid ${g.color}`,borderRadius:14,padding:"16px 18px",marginBottom:16}}>
         <div style={{fontFamily:"'DM Mono',monospace",fontSize:10,color:g.color,letterSpacing:2,marginBottom:12}}>PROGRAM NOTES</div>
         {woPlan.notes.map((n,i)=>(<div key={i} style={{display:"flex",gap:10,marginBottom:7}}>
           <div style={{width:4,height:4,borderRadius:"50%",background:g.color,marginTop:6,flexShrink:0}}/>
-          <span style={{fontFamily:"'DM Mono',monospace",fontSize:11,color:"#c4a882",lineHeight:1.6}}>{n}</span>
+          <span style={{fontFamily:"'DM Mono',monospace",fontSize:11,color:"#2c4a6e",lineHeight:1.6}}>{n}</span>
         </div>))}
       </div>
 
       <button onClick={()=>setScreen("timer")}
-        style={{width:"100%",padding:"16px 0",borderRadius:12,background:`linear-gradient(135deg,${g.color},${g.color}bb)`,border:"none",color:"#1c1208",fontFamily:"'Bebas Neue',cursive",fontSize:20,letterSpacing:3,cursor:"pointer",transition:"all .25s"}}>
+        style={{width:"100%",padding:"16px 0",borderRadius:12,background:`linear-gradient(135deg,${g.color},${g.color}bb)`,border:"none",color:"#f0f6ff",fontFamily:"'Bebas Neue',cursive",fontSize:20,letterSpacing:3,cursor:"pointer",transition:"all .25s"}}>
         GO TO TIMERS →
       </button>
     </div>);
@@ -834,9 +834,9 @@ export default function FitnessCompanion() {
     if(!macros) return(
       <div style={{textAlign:"center",padding:48}}>
         <div style={{fontSize:48,marginBottom:16}}>🍽️</div>
-        <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:22,color:"#e8943a",letterSpacing:2}}>COMPLETE YOUR PROFILE FIRST</div>
-        <div style={{fontFamily:"'DM Mono',monospace",fontSize:11,color:"#8a7560",marginTop:8,lineHeight:1.8}}>Fill in your profile and select a goal to get personalized meal recommendations.</div>
-        <button onClick={()=>setScreen("profile")} style={{marginTop:20,padding:"12px 24px",borderRadius:10,background:"#e8943a",border:"none",color:"#1c1208",fontFamily:"'Bebas Neue',cursive",fontSize:16,letterSpacing:2,cursor:"pointer"}}>GO TO PROFILE</button>
+        <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:22,color:"#1a7fe8",letterSpacing:2}}>COMPLETE YOUR PROFILE FIRST</div>
+        <div style={{fontFamily:"'DM Mono',monospace",fontSize:11,color:"#5a7299",marginTop:8,lineHeight:1.8}}>Fill in your profile and select a goal to get personalized meal recommendations.</div>
+        <button onClick={()=>setScreen("profile")} style={{marginTop:20,padding:"12px 24px",borderRadius:10,background:"#1a7fe8",border:"none",color:"#f0f6ff",fontFamily:"'Bebas Neue',cursive",fontSize:16,letterSpacing:2,cursor:"pointer"}}>GO TO PROFILE</button>
       </div>
     );
 
@@ -1080,54 +1080,54 @@ export default function FitnessCompanion() {
       }, 800);
     };
 
-    const macroColor={protein:"#66bb6a",carbs:"#42a5f5",fat:"#e8943a",fiber:"#ab47bc",calories:"#fdf3e3"};
+    const macroColor={protein:"#43a047",carbs:"#1e88e5",fat:"#1a7fe8",fiber:"#8e24aa",calories:"#1a2e4a"};
 
     return(
       <div>
         <div style={{textAlign:"center",marginBottom:24}}>
           <div style={{fontFamily:"'DM Mono',monospace",fontSize:10,color:g.color,letterSpacing:3,marginBottom:6}}>NUTRITION PLANNING</div>
-          <h2 style={{fontFamily:"'Bebas Neue',cursive",fontSize:32,color:"#fdf3e3",letterSpacing:2,lineHeight:1}}>MEAL PLANNER</h2>
-          <p style={{fontFamily:"'DM Mono',monospace",fontSize:11,color:"#8a7560",marginTop:6}}>Per-meal macro targets + instant meal recommendations</p>
+          <h2 style={{fontFamily:"'Bebas Neue',cursive",fontSize:32,color:"#1a2e4a",letterSpacing:2,lineHeight:1}}>MEAL PLANNER</h2>
+          <p style={{fontFamily:"'DM Mono',monospace",fontSize:11,color:"#5a7299",marginTop:6}}>Per-meal macro targets + instant meal recommendations</p>
         </div>
 
         {/* Daily summary bar */}
-        <div style={{background:`linear-gradient(135deg,#3d2e1a,#0f1a28)`,border:`1px solid ${g.color}33`,borderRadius:14,padding:"16px",marginBottom:16}}>
+        <div style={{background:`linear-gradient(135deg,#c5d8f5,#0f1a28)`,border:`1px solid ${g.color}33`,borderRadius:14,padding:"16px",marginBottom:16}}>
           <div style={{fontFamily:"'DM Mono',monospace",fontSize:9,color:g.color,letterSpacing:3,marginBottom:12,textAlign:"center"}}>DAILY TARGETS</div>
           <div style={{display:"flex",justifyContent:"space-around",flexWrap:"wrap",gap:8}}>
             {[
-              {l:"Calories",v:macros.targetCalories,u:"kcal",c:"#fdf3e3"},
-              {l:"Protein", v:macros.protein,        u:"g",   c:"#66bb6a"},
-              {l:"Carbs",   v:macros.carbs,           u:"g",   c:"#42a5f5"},
-              {l:"Fat",     v:macros.fat,             u:"g",   c:"#e8943a"},
-              {l:"Fiber",   v:macros.fiber,           u:"g",   c:"#ab47bc"},
+              {l:"Calories",v:macros.targetCalories,u:"kcal",c:"#1a2e4a"},
+              {l:"Protein", v:macros.protein,        u:"g",   c:"#43a047"},
+              {l:"Carbs",   v:macros.carbs,           u:"g",   c:"#1e88e5"},
+              {l:"Fat",     v:macros.fat,             u:"g",   c:"#1a7fe8"},
+              {l:"Fiber",   v:macros.fiber,           u:"g",   c:"#8e24aa"},
             ].map(m=>(<div key={m.l} style={{textAlign:"center",minWidth:52}}>
               <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:22,color:m.c,lineHeight:1}}>{m.v}</div>
-              <div style={{fontFamily:"'DM Mono',monospace",fontSize:9,color:"#8a7560",marginTop:1}}>{m.l}</div>
+              <div style={{fontFamily:"'DM Mono',monospace",fontSize:9,color:"#5a7299",marginTop:1}}>{m.l}</div>
             </div>))}
           </div>
         </div>
 
         {/* Day type toggle */}
         <div style={{marginBottom:16}}>
-          <div style={{fontFamily:"'DM Mono',monospace",fontSize:9,color:"#8a7560",letterSpacing:2,marginBottom:8}}>DAY TYPE</div>
-          <div style={{display:"flex",background:"#160f06",borderRadius:10,padding:3,gap:3}}>
+          <div style={{fontFamily:"'DM Mono',monospace",fontSize:9,color:"#5a7299",letterSpacing:2,marginBottom:8}}>DAY TYPE</div>
+          <div style={{display:"flex",background:"#e8f0fe",borderRadius:10,padding:3,gap:3}}>
             {[{id:"training",label:"🏋️ Training Day"},{id:"rest",label:"😴 Rest Day"}].map(d=>(
               <button key={d.id} onClick={()=>setActiveDay(d.id)}
-                style={{flex:1,padding:"10px 0",borderRadius:8,border:activeDay===d.id?`1px solid ${g.color}44`:"1px solid transparent",background:activeDay===d.id?"#3a2a16":"transparent",color:activeDay===d.id?g.color:"#8a7560",fontFamily:"'DM Mono',monospace",fontSize:11,cursor:"pointer",transition:"all .2s"}}>
+                style={{flex:1,padding:"10px 0",borderRadius:8,border:activeDay===d.id?`1px solid ${g.color}44`:"1px solid transparent",background:activeDay===d.id?"#c5d8f5":"transparent",color:activeDay===d.id?g.color:"#5a7299",fontFamily:"'DM Mono',monospace",fontSize:11,cursor:"pointer",transition:"all .2s"}}>
                 {d.label}
               </button>
             ))}
           </div>
-          {activeDay==="training"&&<div style={{fontFamily:"'DM Mono',monospace",fontSize:10,color:"#8a7560",marginTop:6,paddingLeft:4}}>↑ Larger meals around your workout window</div>}
+          {activeDay==="training"&&<div style={{fontFamily:"'DM Mono',monospace",fontSize:10,color:"#5a7299",marginTop:6,paddingLeft:4}}>↑ Larger meals around your workout window</div>}
         </div>
 
         {/* Meal count */}
         <div style={{marginBottom:16}}>
-          <div style={{fontFamily:"'DM Mono',monospace",fontSize:9,color:"#8a7560",letterSpacing:2,marginBottom:8}}>MEALS PER DAY</div>
+          <div style={{fontFamily:"'DM Mono',monospace",fontSize:9,color:"#5a7299",letterSpacing:2,marginBottom:8}}>MEALS PER DAY</div>
           <div style={{display:"flex",gap:8}}>
             {[2,3,4,5].map(n=>(
               <button key={n} onClick={()=>setMeals(n)}
-                style={{flex:1,padding:"12px 0",borderRadius:10,border:`1px solid ${meals===n?g.color+"44":"#4a3520"}`,background:meals===n?"#3a2a16":"#251a0e",color:meals===n?g.color:"#c4a882",fontFamily:"'Bebas Neue',cursive",fontSize:20,letterSpacing:1,cursor:"pointer",transition:"all .2s"}}>
+                style={{flex:1,padding:"12px 0",borderRadius:10,border:`1px solid ${meals===n?g.color+"44":"#b8cef0"}`,background:meals===n?"#c5d8f5":"#ffffff",color:meals===n?g.color:"#2c4a6e",fontFamily:"'Bebas Neue',cursive",fontSize:20,letterSpacing:1,cursor:"pointer",transition:"all .2s"}}>
                 {n}
               </button>
             ))}
@@ -1136,25 +1136,25 @@ export default function FitnessCompanion() {
 
         {/* Per-meal macro breakdown */}
         <div style={{marginBottom:20}}>
-          <div style={{fontFamily:"'DM Mono',monospace",fontSize:9,color:"#8a7560",letterSpacing:2,marginBottom:10}}>PER-MEAL BREAKDOWN</div>
+          <div style={{fontFamily:"'DM Mono',monospace",fontSize:9,color:"#5a7299",letterSpacing:2,marginBottom:10}}>PER-MEAL BREAKDOWN</div>
           <div style={{display:"flex",flexDirection:"column",gap:8}}>
             {mealMacros.map((m,i)=>(
-              <div key={i} style={{background:"#2a1e10",border:"1px solid #3a2a16",borderRadius:12,padding:"14px 14px",position:"relative",overflow:"hidden"}}>
+              <div key={i} style={{background:"#f8faff",border:"1px solid #dde8f8",boxShadow:"0 2px 8px rgba(26,100,200,.06)",borderRadius:12,padding:"14px 14px",position:"relative",overflow:"hidden"}}>
                 {/* progress fill */}
                 <div style={{position:"absolute",left:0,top:0,bottom:0,width:`${m.pct*100}%`,background:`${g.color}08`,borderRight:`1px solid ${g.color}22`,borderRadius:"12px 0 0 12px"}}/>
                 <div style={{position:"relative"}}>
                   <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
                     <div>
                       <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:16,color:g.color,letterSpacing:1}}>{m.name}</div>
-                      <div style={{fontFamily:"'DM Mono',monospace",fontSize:9,color:"#8a7560"}}>{Math.round(m.pct*100)}% of daily intake</div>
+                      <div style={{fontFamily:"'DM Mono',monospace",fontSize:9,color:"#5a7299"}}>{Math.round(m.pct*100)}% of daily intake</div>
                     </div>
-                    <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:22,color:"#fdf3e3"}}>{m.calories}<span style={{fontSize:11,color:"#8a7560"}}> kcal</span></div>
+                    <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:22,color:"#1a2e4a"}}>{m.calories}<span style={{fontSize:11,color:"#5a7299"}}> kcal</span></div>
                   </div>
                   <div style={{display:"flex",gap:10}}>
-                    {[{l:"PRO",v:m.protein,c:"#66bb6a"},{l:"CARB",v:m.carbs,c:"#42a5f5"},{l:"FAT",v:m.fat,c:"#e8943a"},{l:"FIB",v:m.fiber,c:"#ab47bc"}].map(x=>(
-                      <div key={x.l} style={{flex:1,textAlign:"center",background:"#251a0e",borderRadius:7,padding:"6px 4px"}}>
+                    {[{l:"PRO",v:m.protein,c:"#43a047"},{l:"CARB",v:m.carbs,c:"#1e88e5"},{l:"FAT",v:m.fat,c:"#1a7fe8"},{l:"FIB",v:m.fiber,c:"#8e24aa"}].map(x=>(
+                      <div key={x.l} style={{flex:1,textAlign:"center",background:"#ffffff",borderRadius:7,padding:"6px 4px"}}>
                         <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:16,color:x.c,lineHeight:1}}>{x.v}</div>
-                        <div style={{fontFamily:"'DM Mono',monospace",fontSize:8,color:"#8a7560",marginTop:1}}>{x.l}</div>
+                        <div style={{fontFamily:"'DM Mono',monospace",fontSize:8,color:"#5a7299",marginTop:1}}>{x.l}</div>
                       </div>
                     ))}
                   </div>
@@ -1165,17 +1165,17 @@ export default function FitnessCompanion() {
         </div>
 
         {/* AI Meal Generator */}
-        <div style={{background:"#251a0e",border:`1px solid ${g.color}33`,borderRadius:16,padding:"18px 16px",marginBottom:16}}>
+        <div style={{background:"#ffffff",border:`1px solid ${g.color}33`,borderRadius:16,padding:"18px 16px",marginBottom:16}}>
           <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:18,color:g.color,letterSpacing:2,marginBottom:4}}>MEAL GENERATOR</div>
-          <div style={{fontFamily:"'DM Mono',monospace",fontSize:10,color:"#8a7560",marginBottom:16}}>Meals built around your exact macro targets — no internet needed</div>
+          <div style={{fontFamily:"'DM Mono',monospace",fontSize:10,color:"#5a7299",marginBottom:16}}>Meals built around your exact macro targets — no internet needed</div>
 
           {/* Diet preference */}
           <div style={{marginBottom:14}}>
-            <div style={{fontFamily:"'DM Mono',monospace",fontSize:9,color:"#8a7560",letterSpacing:2,marginBottom:8}}>DIET STYLE</div>
+            <div style={{fontFamily:"'DM Mono',monospace",fontSize:9,color:"#5a7299",letterSpacing:2,marginBottom:8}}>DIET STYLE</div>
             <div style={{display:"flex",flexWrap:"wrap",gap:6}}>
               {dietOptions.map(d=>(
                 <button key={d.id} onClick={()=>setDietPref(d.id)}
-                  style={{padding:"7px 12px",borderRadius:20,border:`1px solid ${dietPref===d.id?g.color+"66":"#4a3520"}`,background:dietPref===d.id?`${g.color}18`:"transparent",color:dietPref===d.id?g.color:"#c4a882",fontFamily:"'DM Mono',monospace",fontSize:10,cursor:"pointer",transition:"all .2s",whiteSpace:"nowrap"}}>
+                  style={{padding:"7px 12px",borderRadius:20,border:`1px solid ${dietPref===d.id?g.color+"66":"#b8cef0"}`,background:dietPref===d.id?`${g.color}18`:"transparent",color:dietPref===d.id?g.color:"#2c4a6e",fontFamily:"'DM Mono',monospace",fontSize:10,cursor:"pointer",transition:"all .2s",whiteSpace:"nowrap"}}>
                   {d.emoji} {d.label}
                 </button>
               ))}
@@ -1184,11 +1184,11 @@ export default function FitnessCompanion() {
 
           {/* Restrictions */}
           <div style={{marginBottom:16}}>
-            <div style={{fontFamily:"'DM Mono',monospace",fontSize:9,color:"#8a7560",letterSpacing:2,marginBottom:8}}>RESTRICTIONS / ALLERGIES</div>
+            <div style={{fontFamily:"'DM Mono',monospace",fontSize:9,color:"#5a7299",letterSpacing:2,marginBottom:8}}>RESTRICTIONS / ALLERGIES</div>
             <div style={{display:"flex",flexWrap:"wrap",gap:6}}>
               {restrictionOptions.map(r=>(
                 <button key={r} onClick={()=>toggleRestriction(r)}
-                  style={{padding:"6px 11px",borderRadius:20,border:`1px solid ${restrictions.includes(r)?"#ff704366":"#4a3520"}`,background:restrictions.includes(r)?"#ff704318":"transparent",color:restrictions.includes(r)?"#ff7043":"#c4a882",fontFamily:"'DM Mono',monospace",fontSize:10,cursor:"pointer",transition:"all .2s"}}>
+                  style={{padding:"6px 11px",borderRadius:20,border:`1px solid ${restrictions.includes(r)?"#e5393566":"#b8cef0"}`,background:restrictions.includes(r)?"#e5393518":"transparent",color:restrictions.includes(r)?"#e53935":"#2c4a6e",fontFamily:"'DM Mono',monospace",fontSize:10,cursor:"pointer",transition:"all .2s"}}>
                   {restrictions.includes(r)?"✕ ":""}{r}
                 </button>
               ))}
@@ -1196,7 +1196,7 @@ export default function FitnessCompanion() {
           </div>
 
           <button onClick={generateMeals} disabled={loading}
-            style={{width:"100%",padding:"14px 0",borderRadius:12,background:loading?"#3d2e1a":`linear-gradient(135deg,${g.color},${g.color}bb)`,border:"none",color:loading?"#8a7560":"#1c1208",fontFamily:"'Bebas Neue',cursive",fontSize:18,letterSpacing:3,cursor:loading?"not-allowed":"pointer",transition:"all .25s"}}>
+            style={{width:"100%",padding:"14px 0",borderRadius:12,background:loading?"#c5d8f5":`linear-gradient(135deg,${g.color},${g.color}bb)`,border:"none",color:loading?"#5a7299":"#f0f6ff",fontFamily:"'Bebas Neue',cursive",fontSize:18,letterSpacing:3,cursor:loading?"not-allowed":"pointer",transition:"all .25s"}}>
             {loading?"BUILDING YOUR MEAL PLAN...":"🍽️ GENERATE MEAL PLAN"}
           </button>
         </div>
@@ -1206,41 +1206,41 @@ export default function FitnessCompanion() {
           <div style={{textAlign:"center",padding:"32px 0"}}>
             <div style={{fontSize:40,marginBottom:12,animation:"spin 1.5s linear infinite",display:"inline-block"}}>🍽️</div>
             <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:18,color:g.color,letterSpacing:2,marginBottom:6}}>BUILDING YOUR MEAL PLAN</div>
-            <div style={{fontFamily:"'DM Mono',monospace",fontSize:11,color:"#8a7560"}}>Calculating macros for each meal...</div>
+            <div style={{fontFamily:"'DM Mono',monospace",fontSize:11,color:"#5a7299"}}>Calculating macros for each meal...</div>
             <style>{`@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}`}</style>
           </div>
         )}
 
         {/* Error */}
-        {error&&(<div style={{background:"#2e1510",border:"1px solid #ff704344",borderRadius:12,padding:16,marginBottom:16,fontFamily:"'DM Mono',monospace",fontSize:11,color:"#ff7043"}}>{error}</div>)}
+        {error&&(<div style={{background:"#ffe8e8",border:"1px solid #e5393544",borderRadius:12,padding:16,marginBottom:16,fontFamily:"'DM Mono',monospace",fontSize:11,color:"#e53935"}}>{error}</div>)}
 
         {/* AI Results */}
         {aiMeals&&!loading&&(
           <div style={{animation:"fadeUp .5s ease forwards"}}>
-            <div style={{fontFamily:"'DM Mono',monospace",fontSize:9,color:"#8a7560",letterSpacing:2,marginBottom:10}}>YOUR MEAL PLAN — {activeDay==="training"?"TRAINING":"REST"} DAY</div>
+            <div style={{fontFamily:"'DM Mono',monospace",fontSize:9,color:"#5a7299",letterSpacing:2,marginBottom:10}}>YOUR MEAL PLAN — {activeDay==="training"?"TRAINING":"REST"} DAY</div>
 
             {aiMeals.meals?.map((meal,i)=>(
-              <div key={i} style={{background:"#2a1e10",border:"1px solid #3a2a16",borderRadius:14,padding:"16px",marginBottom:12}}>
+              <div key={i} style={{background:"#f8faff",border:"1px solid #dde8f8",boxShadow:"0 2px 8px rgba(26,100,200,.06)",borderRadius:14,padding:"16px",marginBottom:12}}>
                 <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:12}}>
                   <div>
                     <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:19,color:g.color,letterSpacing:1}}>{meal.name}</div>
-                    <div style={{fontFamily:"'DM Mono',monospace",fontSize:10,color:"#8a7560"}}>{meal.time}</div>
+                    <div style={{fontFamily:"'DM Mono',monospace",fontSize:10,color:"#5a7299"}}>{meal.time}</div>
                   </div>
-                  <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:20,color:"#fdf3e3",textAlign:"right"}}>{meal.totals?.calories}<span style={{fontSize:10,color:"#8a7560"}}> kcal</span></div>
+                  <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:20,color:"#1a2e4a",textAlign:"right"}}>{meal.totals?.calories}<span style={{fontSize:10,color:"#5a7299"}}> kcal</span></div>
                 </div>
 
                 {/* Foods */}
                 <div style={{marginBottom:12}}>
                   {meal.foods?.map((food,j)=>(
-                    <div key={j} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"6px 0",borderBottom:"1px solid #3d2e1a"}}>
+                    <div key={j} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"6px 0",borderBottom:"1px solid #c5d8f5"}}>
                       <div style={{flex:1}}>
-                        <div style={{fontFamily:"'DM Mono',monospace",fontSize:11,color:"#fdf3e3"}}>{food.item}</div>
-                        <div style={{fontFamily:"'DM Mono',monospace",fontSize:9,color:"#8a7560"}}>{food.amount}</div>
+                        <div style={{fontFamily:"'DM Mono',monospace",fontSize:11,color:"#1a2e4a"}}>{food.item}</div>
+                        <div style={{fontFamily:"'DM Mono',monospace",fontSize:9,color:"#5a7299"}}>{food.amount}</div>
                       </div>
                       <div style={{display:"flex",gap:8,flexShrink:0}}>
-                        <span style={{fontFamily:"'DM Mono',monospace",fontSize:9,color:"#66bb6a"}}>{food.protein}p</span>
-                        <span style={{fontFamily:"'DM Mono',monospace",fontSize:9,color:"#42a5f5"}}>{food.carbs}c</span>
-                        <span style={{fontFamily:"'DM Mono',monospace",fontSize:9,color:"#e8943a"}}>{food.fat}f</span>
+                        <span style={{fontFamily:"'DM Mono',monospace",fontSize:9,color:"#43a047"}}>{food.protein}p</span>
+                        <span style={{fontFamily:"'DM Mono',monospace",fontSize:9,color:"#1e88e5"}}>{food.carbs}c</span>
+                        <span style={{fontFamily:"'DM Mono',monospace",fontSize:9,color:"#1a7fe8"}}>{food.fat}f</span>
                       </div>
                     </div>
                   ))}
@@ -1248,18 +1248,18 @@ export default function FitnessCompanion() {
 
                 {/* Meal totals */}
                 <div style={{display:"flex",gap:8,marginBottom:10}}>
-                  {[{l:"PRO",v:meal.totals?.protein,c:"#66bb6a"},{l:"CARB",v:meal.totals?.carbs,c:"#42a5f5"},{l:"FAT",v:meal.totals?.fat,c:"#e8943a"},{l:"FIB",v:meal.totals?.fiber,c:"#ab47bc"}].map(x=>(
-                    <div key={x.l} style={{flex:1,textAlign:"center",background:"#251a0e",borderRadius:7,padding:"6px 2px"}}>
+                  {[{l:"PRO",v:meal.totals?.protein,c:"#43a047"},{l:"CARB",v:meal.totals?.carbs,c:"#1e88e5"},{l:"FAT",v:meal.totals?.fat,c:"#1a7fe8"},{l:"FIB",v:meal.totals?.fiber,c:"#8e24aa"}].map(x=>(
+                    <div key={x.l} style={{flex:1,textAlign:"center",background:"#ffffff",borderRadius:7,padding:"6px 2px"}}>
                       <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:15,color:x.c,lineHeight:1}}>{x.v}g</div>
-                      <div style={{fontFamily:"'DM Mono',monospace",fontSize:8,color:"#8a7560",marginTop:1}}>{x.l}</div>
+                      <div style={{fontFamily:"'DM Mono',monospace",fontSize:8,color:"#5a7299",marginTop:1}}>{x.l}</div>
                     </div>
                   ))}
                 </div>
 
                 {/* Tip */}
-                {meal.tip&&(<div style={{display:"flex",gap:8,background:"#251a0e",borderRadius:8,padding:"8px 10px"}}>
+                {meal.tip&&(<div style={{display:"flex",gap:8,background:"#ffffff",borderRadius:8,padding:"8px 10px"}}>
                   <span style={{color:g.color,fontSize:12}}>💡</span>
-                  <span style={{fontFamily:"'DM Mono',monospace",fontSize:10,color:"#c4a882",lineHeight:1.5}}>{meal.tip}</span>
+                  <span style={{fontFamily:"'DM Mono',monospace",fontSize:10,color:"#2c4a6e",lineHeight:1.5}}>{meal.tip}</span>
                 </div>)}
               </div>
             ))}
@@ -1268,16 +1268,16 @@ export default function FitnessCompanion() {
             <div style={{background:`${g.color}12`,border:`1px solid ${g.color}33`,borderRadius:14,padding:"16px",marginBottom:12}}>
               <div style={{fontFamily:"'DM Mono',monospace",fontSize:9,color:g.color,letterSpacing:2,marginBottom:12}}>DAILY TOTALS</div>
               <div style={{display:"flex",justifyContent:"space-around"}}>
-                {[{l:"Calories",v:aiMeals.dailyTotals?.calories,u:"kcal",c:"#fdf3e3",t:macros.targetCalories},
-                  {l:"Protein",v:aiMeals.dailyTotals?.protein,u:"g",c:"#66bb6a",t:macros.protein},
-                  {l:"Carbs",v:aiMeals.dailyTotals?.carbs,u:"g",c:"#42a5f5",t:macros.carbs},
-                  {l:"Fat",v:aiMeals.dailyTotals?.fat,u:"g",c:"#e8943a",t:macros.fat},
+                {[{l:"Calories",v:aiMeals.dailyTotals?.calories,u:"kcal",c:"#1a2e4a",t:macros.targetCalories},
+                  {l:"Protein",v:aiMeals.dailyTotals?.protein,u:"g",c:"#43a047",t:macros.protein},
+                  {l:"Carbs",v:aiMeals.dailyTotals?.carbs,u:"g",c:"#1e88e5",t:macros.carbs},
+                  {l:"Fat",v:aiMeals.dailyTotals?.fat,u:"g",c:"#1a7fe8",t:macros.fat},
                 ].map(x=>{
                   const diff=x.v-x.t, ok=Math.abs(diff)<=x.t*0.05;
                   return(<div key={x.l} style={{textAlign:"center"}}>
                     <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:22,color:x.c,lineHeight:1}}>{x.v}</div>
-                    <div style={{fontFamily:"'DM Mono',monospace",fontSize:8,color:ok?"#66bb6a":diff>0?"#ff6d00":"#ff7043",marginTop:1}}>{ok?"✓ on target":diff>0?`+${diff}`:`${diff}`}</div>
-                    <div style={{fontFamily:"'DM Mono',monospace",fontSize:8,color:"#8a7560"}}>{x.l}</div>
+                    <div style={{fontFamily:"'DM Mono',monospace",fontSize:8,color:ok?"#43a047":diff>0?"#ff6d00":"#e53935",marginTop:1}}>{ok?"✓ on target":diff>0?`+${diff}`:`${diff}`}</div>
+                    <div style={{fontFamily:"'DM Mono',monospace",fontSize:8,color:"#5a7299"}}>{x.l}</div>
                   </div>);
                 })}
               </div>
@@ -1286,31 +1286,31 @@ export default function FitnessCompanion() {
             {/* Hydration & notes */}
             {(aiMeals.hydration||aiMeals.preworkoutNote)&&(
               <div style={{display:"flex",flexDirection:"column",gap:8,marginBottom:8}}>
-                {aiMeals.hydration&&(<div style={{display:"flex",gap:10,background:"#2a1e10",border:"1px solid #3a2a16",borderRadius:10,padding:"12px 14px"}}>
+                {aiMeals.hydration&&(<div style={{display:"flex",gap:10,background:"#f8faff",border:"1px solid #dde8f8",boxShadow:"0 2px 8px rgba(26,100,200,.06)",borderRadius:10,padding:"12px 14px"}}>
                   <span style={{fontSize:16}}>💧</span>
                   <div>
-                    <div style={{fontFamily:"'DM Mono',monospace",fontSize:9,color:"#42a5f5",letterSpacing:2,marginBottom:3}}>HYDRATION</div>
-                    <div style={{fontFamily:"'DM Mono',monospace",fontSize:10,color:"#c4a882",lineHeight:1.5}}>{aiMeals.hydration}</div>
+                    <div style={{fontFamily:"'DM Mono',monospace",fontSize:9,color:"#1e88e5",letterSpacing:2,marginBottom:3}}>HYDRATION</div>
+                    <div style={{fontFamily:"'DM Mono',monospace",fontSize:10,color:"#2c4a6e",lineHeight:1.5}}>{aiMeals.hydration}</div>
                   </div>
                 </div>)}
-                {aiMeals.preworkoutNote&&(<div style={{display:"flex",gap:10,background:"#2a1e10",border:"1px solid #3a2a16",borderRadius:10,padding:"12px 14px"}}>
+                {aiMeals.preworkoutNote&&(<div style={{display:"flex",gap:10,background:"#f8faff",border:"1px solid #dde8f8",boxShadow:"0 2px 8px rgba(26,100,200,.06)",borderRadius:10,padding:"12px 14px"}}>
                   <span style={{fontSize:16}}>⚡</span>
                   <div>
                     <div style={{fontFamily:"'DM Mono',monospace",fontSize:9,color:g.color,letterSpacing:2,marginBottom:3}}>WORKOUT NUTRITION</div>
-                    <div style={{fontFamily:"'DM Mono',monospace",fontSize:10,color:"#c4a882",lineHeight:1.5}}>{aiMeals.preworkoutNote}</div>
+                    <div style={{fontFamily:"'DM Mono',monospace",fontSize:10,color:"#2c4a6e",lineHeight:1.5}}>{aiMeals.preworkoutNote}</div>
                   </div>
                 </div>)}
               </div>
             )}
 
             <button onClick={generateMeals}
-              style={{width:"100%",padding:"13px 0",borderRadius:10,background:"#251a0e",border:`1px solid ${g.color}44`,color:g.color,fontFamily:"'Bebas Neue',cursive",fontSize:16,letterSpacing:2,cursor:"pointer",marginTop:4}}>
+              style={{width:"100%",padding:"13px 0",borderRadius:10,background:"#ffffff",border:`1px solid ${g.color}44`,color:g.color,fontFamily:"'Bebas Neue',cursive",fontSize:16,letterSpacing:2,cursor:"pointer",marginTop:4}}>
               ↻ REGENERATE PLAN
             </button>
           </div>
         )}
 
-        <p style={{textAlign:"center",fontFamily:"'DM Mono',monospace",fontSize:9,color:"#4a3825",lineHeight:1.6,marginTop:20}}>
+        <p style={{textAlign:"center",fontFamily:"'DM Mono',monospace",fontSize:9,color:"#7a9abf",lineHeight:1.6,marginTop:20}}>
           Not medical advice. Consult a registered dietitian before significant dietary changes.
         </p>
       </div>
@@ -1325,8 +1325,8 @@ export default function FitnessCompanion() {
     if(allowed.length===0) return(
       <div style={{textAlign:"center",padding:40}}>
         <div style={{fontSize:48,marginBottom:16}}>💪</div>
-        <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:24,color:"#26a69a",letterSpacing:2}}>LIFTING FOCUS</div>
-        <div style={{fontFamily:"'DM Mono',monospace",fontSize:12,color:"#8a7560",marginTop:8,lineHeight:1.8}}>
+        <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:24,color:"#0097a7",letterSpacing:2}}>LIFTING FOCUS</div>
+        <div style={{fontFamily:"'DM Mono',monospace",fontSize:12,color:"#5a7299",marginTop:8,lineHeight:1.8}}>
           Your goal is muscle gain. HIIT is not recommended.<br/>
           Focus on your Push / Pull / Legs lifting split.<br/>
           Use the Abs timer for your core work.
@@ -1344,25 +1344,26 @@ export default function FitnessCompanion() {
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&display=swap');
         *{box-sizing:border-box;margin:0;padding:0;}
-        body{background:#1c1208;}
-        select option{background:#1e1409;color:#fdf3e3;}
+        body{background:#eef4ff;}
+        .card{background:#ffffff;border-radius:14px;box-shadow:0 2px 12px rgba(26,100,200,.08);}
+        select option{background:#ffffff;color:#1a2e4a;}
         @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
         @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
         .fade-up{animation:fadeUp .4s ease forwards;}
         input[type=range]{-webkit-appearance:none;height:4px;border-radius:2px;outline:none;cursor:pointer;}
         ::-webkit-scrollbar{width:6px;}
-        ::-webkit-scrollbar-track{background:#1c1208;}
-        ::-webkit-scrollbar-thumb{background:#4a3520;border-radius:3px;}
+        ::-webkit-scrollbar-track{background:#f0f6ff;}
+        ::-webkit-scrollbar-thumb{background:#b8cef0;border-radius:3px;}
         button:focus{outline:none;}
       `}</style>
 
-      <div style={{minHeight:"100vh",background:"#1c1208",fontFamily:"'DM Mono',monospace"}}>
+      <div style={{minHeight:"100vh",background:"#f0f6ff",fontFamily:"'DM Mono',monospace"}}>
 
         {/* Top bar */}
-        <div style={{background:"linear-gradient(135deg,#2a1a08,#1c1208)",borderBottom:"1px solid #4a3520",padding:"14px 20px",display:"flex",alignItems:"center",justifyContent:"space-between",position:"sticky",top:0,zIndex:10}}>
+        <div style={{background:"linear-gradient(135deg,#1a7fe8,#0d5bc4)",borderBottom:"1px solid #b8cef0",padding:"14px 20px",display:"flex",alignItems:"center",justifyContent:"space-between",position:"sticky",top:0,zIndex:10}}>
           <div>
-            <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:20,color:"#f0a84a",letterSpacing:3,lineHeight:1}}>FIT</div>
-            <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:9,color:"#6b5a45",letterSpacing:3}}>COMPANION</div>
+            <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:20,color:"#ffffff",letterSpacing:3,lineHeight:1}}>FIT</div>
+            <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:9,color:"#7a9abf",letterSpacing:3}}>COMPANION</div>
           </div>
           {goal&&goalObj&&(
             <div style={{display:"flex",alignItems:"center",gap:6,background:`${goalObj.color}18`,border:`1px solid ${goalObj.color}44`,borderRadius:20,padding:"4px 12px"}}>
@@ -1373,13 +1374,13 @@ export default function FitnessCompanion() {
         </div>
 
         {/* Nav */}
-        <div style={{display:"flex",background:"#221508",borderBottom:"1px solid #4a3520"}}>
+        <div style={{display:"flex",background:"#e4eeff",borderBottom:"1px solid #b8cef0"}}>
           {navItems.map(n=>{
             const active=screen===n.id, ok=canNav(n.id);
             return(<button key={n.id} onClick={()=>ok&&setScreen(n.id)}
-              style={{flex:1,padding:"11px 0",display:"flex",flexDirection:"column",alignItems:"center",gap:2,background:"transparent",border:"none",borderBottom:active?"2px solid #e8943a":"2px solid transparent",cursor:ok?"pointer":"not-allowed",opacity:ok?1:.4,transition:"all .2s"}}>
+              style={{flex:1,padding:"11px 0",display:"flex",flexDirection:"column",alignItems:"center",gap:2,background:"transparent",border:"none",borderBottom:active?"2px solid #1a7fe8":"2px solid transparent",cursor:ok?"pointer":"not-allowed",opacity:ok?1:.4,transition:"all .2s"}}>
               <span style={{fontSize:16}}>{n.emoji}</span>
-              <span style={{fontFamily:"'DM Mono',monospace",fontSize:9,color:active?"#e8943a":"#8a7560",letterSpacing:1,textTransform:"uppercase"}}>{n.label}</span>
+              <span style={{fontFamily:"'DM Mono',monospace",fontSize:9,color:active?"#1a7fe8":"#5a7299",letterSpacing:1,textTransform:"uppercase"}}>{n.label}</span>
             </button>);
           })}
         </div>
