@@ -617,7 +617,7 @@ export default function FitnessCompanion() {
               </select>
             </div>
           ):(
-            <input type="number" value={heightCm} onChange={e=>setHeightCm(+e.target.value)} style={inp} placeholder="cm"/>
+            <input type="number" defaultValue={heightCm||""} onBlur={e=>setHeightCm(e.target.value)} onChange={e=>setHeightCm(e.target.value)} style={inp} placeholder="cm"/>
           )}
         </div>
 
@@ -625,14 +625,14 @@ export default function FitnessCompanion() {
           <div>
             <Label>Current Weight</Label>
             {unit==="imperial"
-              ?<input type="number" value={weightLbs} onChange={e=>setWeightLbs(+e.target.value)} style={inp} placeholder="lbs"/>
-              :<input type="number" value={weightKg}  onChange={e=>setWeightKg(+e.target.value)}  style={inp} placeholder="kg"/>}
+              ?<input type="number" defaultValue={weightLbs||""} onBlur={e=>setWeightLbs(e.target.value)} onChange={e=>setWeightLbs(e.target.value)} style={inp} placeholder="lbs"/>
+              :<input type="number" defaultValue={weightKg||""} onBlur={e=>setWeightKg(e.target.value)} onChange={e=>setWeightKg(e.target.value)} style={inp} placeholder="kg"/>}
           </div>
           <div>
             <Label>{goal==="gain"?"Target Weight":"Goal Weight"}</Label>
             {unit==="imperial"
-              ?<input type="number" value={goalLbs} onChange={e=>setGoalLbs(+e.target.value)} style={inp} placeholder="lbs"/>
-              :<input type="number" value={goalKg}  onChange={e=>setGoalKg(+e.target.value)}  style={inp} placeholder="kg"/>}
+              ?<input type="number" defaultValue={goalLbs||""} onBlur={e=>setGoalLbs(e.target.value)} onChange={e=>setGoalLbs(e.target.value)} style={inp} placeholder="lbs"/>
+              :<input type="number" defaultValue={goalKg||""} onBlur={e=>setGoalKg(e.target.value)} onChange={e=>setGoalKg(e.target.value)} style={inp} placeholder="kg"/>}
           </div>
         </div>
       </Section>
