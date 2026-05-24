@@ -887,60 +887,197 @@ export default function FitnessCompanion() {
 
     const toggleRestriction = r => setRestrictions(prev=>prev.includes(r)?prev.filter(x=>x!==r):[...prev,r]);
 
-    const generateMeals = async () => {
+    // ── OFFLINE MEAL DATABASE ─────────────────────────────────────
+    const FOOD_DB = {
+      proteins: {
+        any:         [{item:"Shredded Chicken Breast",  p:35, c:0,  f:3,  cal:167, fiber:0, amt:"5 oz"},
+                      {item:"Ground Turkey 93%",         p:28, c:0,  f:8,  cal:179, fiber:0, amt:"4 oz"},
+                      {item:"Canned Tuna in Water",      p:25, c:0,  f:1,  cal:109, fiber:0, amt:"3.5 oz"},
+                      {item:"Salmon Fillet",             p:30, c:0,  f:11, cal:208, fiber:0, amt:"4 oz"},
+                      {item:"Shrimp",                    p:24, c:1,  f:1,  cal:112, fiber:0, amt:"4 oz"},
+                      {item:"Egg Whites",                p:18, c:1,  f:0,  cal:77,  fiber:0, amt:"6 whites"},
+                      {item:"Whole Eggs",                p:12, c:1,  f:10, cal:143, fiber:0, amt:"2 large"},
+                      {item:"Ground Beef 96% Lean",      p:28, c:0,  f:6,  cal:163, fiber:0, amt:"4 oz"},
+                      {item:"Tilapia",                   p:29, c:0,  f:3,  cal:145, fiber:0, amt:"4 oz"},
+                      {item:"Turkey Meatballs",          p:24, c:4,  f:8,  cal:182, fiber:0, amt:"4 oz"}],
+        vegan:       [{item:"Tempeh",                   p:19, c:8,  f:11, cal:195, fiber:0, amt:"3.5 oz"},
+                      {item:"Firm Tofu",                p:17, c:4,  f:9,  cal:177, fiber:1, amt:"5 oz"},
+                      {item:"Edamame",                  p:17, c:14, f:8,  cal:188, fiber:8, amt:"1 cup"},
+                      {item:"Black Beans",              p:15, c:41, f:1,  cal:227, fiber:15,amt:"1 cup"},
+                      {item:"Lentils",                  p:18, c:40, f:1,  cal:230, fiber:16,amt:"1 cup"},
+                      {item:"Chickpeas",                p:15, c:45, f:4,  cal:269, fiber:12,amt:"1 cup"}],
+        vegetarian:  [{item:"Greek Yogurt Non-Fat",     p:20, c:9,  f:0,  cal:120, fiber:0, amt:"1 cup"},
+                      {item:"Cottage Cheese",           p:25, c:6,  f:3,  cal:163, fiber:0, amt:"1 cup"},
+                      {item:"Whole Eggs",               p:12, c:1,  f:10, cal:143, fiber:0, amt:"2 large"},
+                      {item:"Firm Tofu",                p:17, c:4,  f:9,  cal:177, fiber:1, amt:"5 oz"},
+                      {item:"Black Beans",              p:15, c:41, f:1,  cal:227, fiber:15,amt:"1 cup"}],
+        keto:        [{item:"Shredded Chicken Thighs",  p:28, c:0,  f:14, cal:234, fiber:0, amt:"4 oz"},
+                      {item:"Salmon Fillet",            p:30, c:0,  f:11, cal:208, fiber:0, amt:"4 oz"},
+                      {item:"Whole Eggs",               p:12, c:1,  f:10, cal:143, fiber:0, amt:"2 large"},
+                      {item:"Ground Beef 80/20",        p:22, c:0,  f:20, cal:270, fiber:0, amt:"4 oz"},
+                      {item:"Bacon",                    p:12, c:0,  f:18, cal:216, fiber:0, amt:"3 strips"}],
+      },
+      carbs: {
+        any:         [{item:"Sweet Potato",             p:2,  c:26, f:0,  cal:112, fiber:4, amt:"1 medium"},
+                      {item:"Banana",                   p:1,  c:27, f:0,  cal:105, fiber:3, amt:"1 large"},
+                      {item:"Apple",                    p:0,  c:25, f:0,  cal:95,  fiber:4, amt:"1 medium"},
+                      {item:"Blueberries",              p:1,  c:21, f:1,  cal:84,  fiber:4, amt:"1 cup"},
+                      {item:"Mango",                    p:1,  c:25, f:0,  cal:99,  fiber:3, amt:"1 cup"},
+                      {item:"Pineapple",                p:1,  c:22, f:0,  cal:82,  fiber:2, amt:"1 cup"},
+                      {item:"Strawberries",             p:1,  c:12, f:0,  cal:49,  fiber:3, amt:"1 cup"},
+                      {item:"Grapes",                   p:1,  c:28, f:0,  cal:104, fiber:1, amt:"1 cup"},
+                      {item:"Carrots",                  p:1,  c:12, f:0,  cal:52,  fiber:4, amt:"1 cup"},
+                      {item:"Butternut Squash",         p:2,  c:22, f:0,  cal:82,  fiber:7, amt:"1 cup"}],
+        grainfree:   [{item:"Sweet Potato",             p:2,  c:26, f:0,  cal:112, fiber:4, amt:"1 medium"},
+                      {item:"Banana",                   p:1,  c:27, f:0,  cal:105, fiber:3, amt:"1 large"},
+                      {item:"Cassava",                  p:1,  c:39, f:0,  cal:165, fiber:2, amt:"0.5 cup"},
+                      {item:"Plantain",                 p:1,  c:31, f:0,  cal:122, fiber:2, amt:"0.5 cup"},
+                      {item:"Beets",                    p:2,  c:17, f:0,  cal:74,  fiber:4, amt:"1 cup"},
+                      {item:"Parsnips",                 p:2,  c:27, f:0,  cal:100, fiber:6, amt:"1 cup"},
+                      {item:"Butternut Squash",         p:2,  c:22, f:0,  cal:82,  fiber:7, amt:"1 cup"},
+                      {item:"Acorn Squash",             p:2,  c:22, f:0,  cal:83,  fiber:9, amt:"1 cup"}],
+        keto:        [{item:"Raspberries",              p:1,  c:7,  f:1,  cal:32,  fiber:4, amt:"0.5 cup"},
+                      {item:"Blackberries",             p:1,  c:7,  f:0,  cal:31,  fiber:4, amt:"0.5 cup"},
+                      {item:"Avocado",                  p:2,  c:6,  f:15, cal:161, fiber:7, amt:"half"}],
+      },
+      fats: {
+        any:         [{item:"Avocado",                  p:2,  c:6,  f:15, cal:161, fiber:7, amt:"half"},
+                      {item:"Almonds",                  p:6,  c:6,  f:14, cal:164, fiber:4, amt:"1 oz"},
+                      {item:"Olive Oil",                p:0,  c:0,  f:14, cal:119, fiber:0, amt:"1 tbsp"},
+                      {item:"Walnuts",                  p:4,  c:4,  f:18, cal:185, fiber:2, amt:"1 oz"},
+                      {item:"Coconut Oil",              p:0,  c:0,  f:14, cal:121, fiber:0, amt:"1 tbsp"},
+                      {item:"Pumpkin Seeds",            p:9,  c:5,  f:13, cal:180, fiber:2, amt:"1 oz"}],
+      },
+      veggies:       [{item:"Broccoli",                 p:3,  c:6,  f:0,  cal:31,  fiber:2, amt:"1 cup"},
+                      {item:"Spinach",                  p:1,  c:1,  f:0,  cal:7,   fiber:1, amt:"2 cups"},
+                      {item:"Zucchini",                 p:1,  c:4,  f:0,  cal:20,  fiber:1, amt:"1 cup"},
+                      {item:"Bell Peppers",             p:1,  c:7,  f:0,  cal:31,  fiber:2, amt:"1 cup"},
+                      {item:"Asparagus",                p:3,  c:5,  f:0,  cal:27,  fiber:3, amt:"1 cup"},
+                      {item:"Cucumber",                 p:1,  c:4,  f:0,  cal:16,  fiber:1, amt:"1 cup"},
+                      {item:"Celery",                   p:1,  c:3,  f:0,  cal:14,  fiber:2, amt:"1 cup"},
+                      {item:"Kale",                     p:2,  c:7,  f:1,  cal:33,  fiber:1, amt:"1 cup"},
+                      {item:"Green Beans",              p:2,  c:7,  f:0,  cal:31,  fiber:4, amt:"1 cup"},
+                      {item:"Cauliflower",              p:2,  c:5,  f:0,  cal:25,  fiber:2, amt:"1 cup"}],
+    };
+
+    const MEAL_TIMES = ["7:00 AM","8:00 AM","10:00 AM","12:00 PM","1:00 PM","3:00 PM","5:00 PM","6:00 PM","7:30 PM","8:00 PM"];
+    const TIPS = [
+      "Meal prep this in bulk on Sunday to save time during the week.",
+      "Add lemon juice and herbs for flavor without extra calories.",
+      "Eat slowly and stop when 80% full — digestion takes 20 minutes to signal satiety.",
+      "Drink 16 oz of water 30 minutes before this meal.",
+      "This meal is ideal 60–90 minutes before your workout for sustained energy.",
+      "Great post-workout meal — eat within 45 minutes of finishing exercise.",
+      "Add sea salt and black pepper to enhance flavor without affecting macros.",
+      "Batch cook proteins on Sunday for easy grab-and-go meals all week.",
+      "Chew slowly — digestion begins in the mouth and aids nutrient absorption.",
+      "Pair with green tea to boost metabolism slightly and add antioxidants.",
+    ];
+
+    const shuffle = arr => [...arr].sort(()=>Math.random()-0.5);
+    const pick = (arr, n) => shuffle(arr).slice(0, n);
+    const rand = arr => arr[Math.floor(Math.random()*arr.length)];
+
+    const generateMeals = () => {
       setLoading(true); setError(null); setAiMeals(null);
-      const goalLabel = goal==="loss"?"fat loss / caloric deficit":goal==="gain"?"muscle gain / caloric surplus":"body recomposition";
-      const restrictStr = restrictions.length>0 ? `Dietary restrictions: ${restrictions.join(", ")}.` : "";
-      const dietStr = dietPref!=="none" ? `Preferred diet style: ${dietOptions.find(d=>d.id===dietPref)?.label}.` : "";
-      const prompt = `You are a professional sports nutritionist. Generate a full day meal plan for ${meals} meals for a ${age}-year-old ${gender} with a goal of ${goalLabel}.
 
-Daily macro targets:
-- Calories: ${macros.targetCalories} kcal
-- Protein: ${macros.protein}g
-- Carbs: ${macros.carbs}g  
-- Fat: ${macros.fat}g
-- Fiber: ${macros.fiber}g
+      setTimeout(() => {
+        try {
+          const isGrainFree = restrictions.includes("Grain-Free");
+          const isKeto = dietPref === "keto";
+          const isVegan = dietPref === "vegan";
+          const isVegetarian = dietPref === "vegetarian";
 
-${dietStr} ${restrictStr}
-Day type: ${activeDay === "training" ? "Training day (workout today)" : "Rest day"}.
+          const proteinPool = isVegan ? FOOD_DB.proteins.vegan
+            : isVegetarian ? FOOD_DB.proteins.vegetarian
+            : isKeto ? FOOD_DB.proteins.keto
+            : FOOD_DB.proteins.any;
 
-Return ONLY a JSON object (no markdown, no explanation) in this exact format:
-{
-  "meals": [
-    {
-      "name": "Breakfast",
-      "time": "7:00 AM",
-      "foods": [
-        {"item": "food name", "amount": "quantity", "calories": 0, "protein": 0, "carbs": 0, "fat": 0}
-      ],
-      "totals": {"calories": 0, "protein": 0, "carbs": 0, "fat": 0, "fiber": 0},
-      "tip": "one short preparation or timing tip"
-    }
-  ],
-  "dailyTotals": {"calories": 0, "protein": 0, "carbs": 0, "fat": 0, "fiber": 0},
-  "hydration": "water intake recommendation",
-  "preworkoutNote": "brief note about pre/post workout nutrition"
-}`;
+          const carbPool = isKeto ? FOOD_DB.carbs.keto
+            : isGrainFree ? FOOD_DB.carbs.grainfree
+            : FOOD_DB.carbs.any;
 
-      try {
-        const res = await fetch("https://api.anthropic.com/v1/messages", {
-          method:"POST",
-          headers:{"Content-Type":"application/json"},
-          body: JSON.stringify({
-            model:"claude-sonnet-4-20250514",
-            max_tokens:1800,
-            messages:[{role:"user",content:prompt}]
-          })
-        });
-        const data = await res.json();
-        const raw = data.content?.find(b=>b.type==="text")?.text || "";
-        const clean = raw.replace(/```json|```/g,"").trim();
-        const parsed = JSON.parse(clean);
-        setAiMeals(parsed);
-      } catch(e) {
-        setError("Could not generate meals. Please try again.");
-      }
-      setLoading(false);
+          const split = (() => {
+            if(meals===2) return activeDay==="training"?[0.45,0.55]:[0.5,0.5];
+            if(meals===3) return activeDay==="training"?[0.25,0.45,0.30]:[0.33,0.34,0.33];
+            if(meals===4) return activeDay==="training"?[0.20,0.30,0.30,0.20]:[0.25,0.25,0.25,0.25];
+            return activeDay==="training"?[0.15,0.20,0.30,0.25,0.10]:[0.20,0.20,0.20,0.20,0.20];
+          })();
+
+          const mealNamesList = {
+            2:["Breakfast / Lunch","Dinner"],
+            3:["Breakfast","Lunch","Dinner"],
+            4:["Breakfast","Lunch","Pre-Workout Meal","Dinner"],
+            5:["Breakfast","Mid-Morning Snack","Lunch","Pre-Workout Meal","Dinner"],
+          }[meals];
+
+          const timeSlots = meals===2?[MEAL_TIMES[0],MEAL_TIMES[8]]
+            :meals===3?[MEAL_TIMES[0],MEAL_TIMES[3],MEAL_TIMES[7]]
+            :meals===4?[MEAL_TIMES[0],MEAL_TIMES[3],MEAL_TIMES[5],MEAL_TIMES[8]]
+            :[MEAL_TIMES[0],MEAL_TIMES[2],MEAL_TIMES[3],MEAL_TIMES[5],MEAL_TIMES[8]];
+
+          const usedProteins = [], usedCarbs = [], usedVeggies = [];
+
+          const builtMeals = split.map((pct, i) => {
+            const targetCal = Math.round(macros.targetCalories * pct);
+            const targetP   = Math.round(macros.protein * pct);
+            const targetC   = Math.round(macros.carbs * pct);
+            const targetF   = Math.round(macros.fat * pct);
+
+            const availP = proteinPool.filter(x=>!usedProteins.includes(x.item));
+            const prot = availP.length>0 ? availP[Math.floor(Math.random()*availP.length)] : rand(proteinPool);
+            usedProteins.push(prot.item);
+
+            const availC = carbPool.filter(x=>!usedCarbs.includes(x.item));
+            const carb = availC.length>0 ? availC[Math.floor(Math.random()*availC.length)] : rand(carbPool);
+            usedCarbs.push(carb.item);
+
+            const availV = FOOD_DB.veggies.filter(x=>!usedVeggies.includes(x.item));
+            const veg = availV.length>0 ? availV[Math.floor(Math.random()*availV.length)] : rand(FOOD_DB.veggies);
+            usedVeggies.push(veg.item);
+
+            const fat = rand(FOOD_DB.fats.any);
+            const foods = [prot, carb, veg, fat];
+
+            const totals = foods.reduce((acc,f)=>({
+              calories: acc.calories+f.cal,
+              protein:  acc.protein+f.p,
+              carbs:    acc.carbs+f.c,
+              fat:      acc.fat+f.f,
+              fiber:    acc.fiber+f.fiber,
+            }),{calories:0,protein:0,carbs:0,fat:0,fiber:0});
+
+            return {
+              name: mealNamesList[i],
+              time: timeSlots[i],
+              foods: foods.map(f=>({item:f.item,amount:f.amt,calories:f.cal,protein:f.p,carbs:f.c,fat:f.f})),
+              totals,
+              tip: rand(TIPS),
+            };
+          });
+
+          const dailyTotals = builtMeals.reduce((acc,m)=>({
+            calories: acc.calories+m.totals.calories,
+            protein:  acc.protein+m.totals.protein,
+            carbs:    acc.carbs+m.totals.carbs,
+            fat:      acc.fat+m.totals.fat,
+            fiber:    acc.fiber+m.totals.fiber,
+          }),{calories:0,protein:0,carbs:0,fat:0,fiber:0});
+
+          const hydrationOz = Math.round(175/2 + (activeDay==="training"?36:0));
+          setAiMeals({
+            meals: builtMeals,
+            dailyTotals,
+            hydration: `Drink at least ${hydrationOz} oz (${Math.round(hydrationOz/8)} cups) of water today.${activeDay==="training"?" Add 16 oz during your workout.":""}`,
+            preworkoutNote: activeDay==="training"
+              ? "Eat your Pre-Workout Meal 60–90 min before training. Have your BUM pre-workout 30 min before. Drink 16 oz water during your session."
+              : "Rest days are for recovery. Keep protein high, carbs moderate. Avoid heavy meals within 2 hours of sleep.",
+          });
+        } catch(e) {
+          setError("Could not generate meals. Please try again.");
+        }
+        setLoading(false);
+      }, 800);
     };
 
     const macroColor={protein:"#7ec8a0",carbs:"#6fb3e8",fat:"#c8a96e",fiber:"#b87cc8",calories:"#f0ede6"};
@@ -950,7 +1087,7 @@ Return ONLY a JSON object (no markdown, no explanation) in this exact format:
         <div style={{textAlign:"center",marginBottom:24}}>
           <div style={{fontFamily:"'DM Mono',monospace",fontSize:10,color:g.color,letterSpacing:3,marginBottom:6}}>NUTRITION PLANNING</div>
           <h2 style={{fontFamily:"'Bebas Neue',cursive",fontSize:32,color:"#f0ede6",letterSpacing:2,lineHeight:1}}>MEAL PLANNER</h2>
-          <p style={{fontFamily:"'DM Mono',monospace",fontSize:11,color:"#506070",marginTop:6}}>Per-meal macro targets + AI meal recommendations</p>
+          <p style={{fontFamily:"'DM Mono',monospace",fontSize:11,color:"#506070",marginTop:6}}>Per-meal macro targets + instant meal recommendations</p>
         </div>
 
         {/* Daily summary bar */}
@@ -1029,8 +1166,8 @@ Return ONLY a JSON object (no markdown, no explanation) in this exact format:
 
         {/* AI Meal Generator */}
         <div style={{background:"#0d1520",border:`1px solid ${g.color}33`,borderRadius:16,padding:"18px 16px",marginBottom:16}}>
-          <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:18,color:g.color,letterSpacing:2,marginBottom:4}}>AI MEAL GENERATOR</div>
-          <div style={{fontFamily:"'DM Mono',monospace",fontSize:10,color:"#506070",marginBottom:16}}>Personalized meals matched to your exact macros</div>
+          <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:18,color:g.color,letterSpacing:2,marginBottom:4}}>MEAL GENERATOR</div>
+          <div style={{fontFamily:"'DM Mono',monospace",fontSize:10,color:"#506070",marginBottom:16}}>Meals built around your exact macro targets — no internet needed</div>
 
           {/* Diet preference */}
           <div style={{marginBottom:14}}>
@@ -1060,7 +1197,7 @@ Return ONLY a JSON object (no markdown, no explanation) in this exact format:
 
           <button onClick={generateMeals} disabled={loading}
             style={{width:"100%",padding:"14px 0",borderRadius:12,background:loading?"#1a2535":`linear-gradient(135deg,${g.color},${g.color}bb)`,border:"none",color:loading?"#506070":"#0b1018",fontFamily:"'Bebas Neue',cursive",fontSize:18,letterSpacing:3,cursor:loading?"not-allowed":"pointer",transition:"all .25s"}}>
-            {loading?"GENERATING YOUR MEALS...":"✨ GENERATE MEAL PLAN"}
+            {loading?"BUILDING YOUR MEAL PLAN...":"🍽️ GENERATE MEAL PLAN"}
           </button>
         </div>
 
