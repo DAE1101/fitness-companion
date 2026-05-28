@@ -563,11 +563,11 @@ export default function FitnessCompanion() {
   ];
 
   const canNav=(id)=>{
-    if(id==="goals") return true;
-    if(id==="results") return !!goal && !!macros;
-    if(id==="workouts") return !!macros;
-    if(id==="meals") return !!macros;
-    if(id==="timer") return !!macros;
+    if(id==="goals")    return true;
+    if(id==="results")  return !!goal && !!macros;
+    if(id==="workouts") return !!goal;
+    if(id==="timer")    return !!goal;
+    if(id==="meals")    return !!goal && !!macros;
     return true;
   };
 
@@ -1440,14 +1440,16 @@ export default function FitnessCompanion() {
     const [selectedExercise, setSelectedExercise] = useState(null);
     const [imgErrors, setImgErrors] = useState({});
 
-    if(!woPlan) return(
+    if(!goal) return(
       <div style={{textAlign:"center",padding:48}}>
         <div style={{fontSize:48,marginBottom:16}}>🏋️</div>
-        <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:22,color:"#1a7fe8",letterSpacing:2}}>COMPLETE YOUR PROFILE FIRST</div>
-        <div style={{fontFamily:"'DM Mono',monospace",fontSize:11,color:"#5a7299",marginTop:8,lineHeight:1.8}}>Fill in your profile and select a goal to get your workout routines.</div>
-        <button onClick={()=>setScreen("profile")} style={{marginTop:20,padding:"12px 24px",borderRadius:10,background:"#1a7fe8",border:"none",color:"#ffffff",fontFamily:"'Bebas Neue',cursive",fontSize:16,letterSpacing:2,cursor:"pointer"}}>GO TO PROFILE</button>
+        <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:22,color:"#1a7fe8",letterSpacing:2}}>SELECT A GOAL FIRST</div>
+        <div style={{fontFamily:"'DM Mono',monospace",fontSize:11,color:"#5a7299",marginTop:8,lineHeight:1.8}}>Choose your goal to unlock your personalized workout routine.</div>
+        <button onClick={()=>setScreen("goals")} style={{marginTop:20,padding:"12px 24px",borderRadius:10,background:"#1a7fe8",border:"none",color:"#ffffff",fontFamily:"'Bebas Neue',cursive",fontSize:16,letterSpacing:2,cursor:"pointer"}}>SELECT GOAL</button>
       </div>
     );
+    const woPlan = goal ? getWorkoutPlan(goal, experience||"beginner") : null;
+    if(!woPlan) return null;
 
     const g = goalObj;
 
@@ -1604,8 +1606,17 @@ export default function FitnessCompanion() {
   };
 
   const TimerScreen=()=>{
-    const allowed=woPlan
-      ?[...(woPlan.hiitEnabled?["hiit"]:[]),  ...(woPlan.absEnabled?["abs"]:[]) ]
+    const timerPlan = goal ? getWorkoutPlan(goal, experience||"beginner") : null;
+    if(!goal) return(
+      <div style={{textAlign:"center",padding:48}}>
+        <div style={{fontSize:48,marginBottom:16}}>⏱️</div>
+        <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:22,color:"#1a7fe8",letterSpacing:2}}>SELECT A GOAL FIRST</div>
+        <div style={{fontFamily:"'DM Mono',monospace",fontSize:11,color:"#5a7299",marginTop:8,lineHeight:1.8}}>Choose your goal to unlock your workout timers.</div>
+        <button onClick={()=>setScreen("goals")} style={{marginTop:20,padding:"12px 24px",borderRadius:10,background:"#1a7fe8",border:"none",color:"#ffffff",fontFamily:"'Bebas Neue',cursive",fontSize:16,letterSpacing:2,cursor:"pointer"}}>SELECT GOAL</button>
+      </div>
+    );
+    const allowed=timerPlan
+      ?[...(timerPlan.hiitEnabled?["hiit"]:[]),  ...(timerPlan.absEnabled?["abs"]:[]) ]
       :["hiit","abs"];
     if(allowed.length===0) return(
       <div style={{textAlign:"center",padding:40}}>
