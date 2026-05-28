@@ -209,8 +209,8 @@ const TIMER_WORKOUTS = {
     id:"abs", label:"ABS", emoji:"💫",
     accentWork:"#d500f9", accentRest:"#f77f00", accentRoundRest:"#d500f9",
     bgWork:"#f8faff", bgRest:"#ffffff", bgRoundRest:"#f8faff", bgIdle:"#f0f6ff",
-    defaultWork:60, defaultRest:0, defaultRounds:2, defaultRoundRest:60,
-    restBetween:false,
+    defaultWork:60, defaultRest:10, defaultRounds:2, defaultRoundRest:60,
+    restBetween:true,
     exercises:[
       {name:"Dead Bugs",        tip:"Lower back pressed into floor"},
       {name:"Plank Hip Dips",   tip:"Controlled rotation, don't rush"},
@@ -258,7 +258,7 @@ function WorkoutTimer({allowedModes}){
   const [showSettings,setShowSettings]=useState(false);
   const [settings,setSettings]=useState({
     hiit:{work:40,rest:20,roundRest:180,rounds:4},
-    abs: {work:60,rest:0, roundRest:60, rounds:2},
+    abs: {work:60,rest:10,roundRest:60, rounds:2},
   });
 
   const intervalRef=useRef(null);
@@ -557,6 +557,7 @@ export default function FitnessCompanion() {
     {id:"profile", label:"Profile",  emoji:"👤"},
     {id:"goals",   label:"Goals",    emoji:"🎯"},
     {id:"results", label:"Plan",     emoji:"📋"},
+    {id:"workouts",label:"Workouts", emoji:"🏋️"},
     {id:"meals",   label:"Meals",    emoji:"🍽️"},
     {id:"timer",   label:"Timer",    emoji:"⏱"},
   ];
@@ -564,6 +565,7 @@ export default function FitnessCompanion() {
   const canNav=(id)=>{
     if(id==="goals") return true;
     if(id==="results") return !!goal && !!macros;
+    if(id==="workouts") return !!macros;
     if(id==="meals") return !!macros;
     if(id==="timer") return !!macros;
     return true;
@@ -1319,6 +1321,288 @@ export default function FitnessCompanion() {
   };
 
   // ── SCREEN: TIMER ────────────────────────────────────────────
+  // ── SCREEN: WORKOUTS ─────────────────────────────────────────
+  const WORKOUT_ROUTINES = {
+    "Chest & Triceps": {
+      color:"#e53935", emoji:"💪",
+      exercises:[
+        {name:"Barbell Bench Press",       sets:4, reps:"6–8",  rest:"3 min", muscle:"Chest",    tip:"Keep shoulder blades pinched together, feet flat on floor",         img:"https://i.imgur.com/5nCkOzM.gif"},
+        {name:"Incline Dumbbell Press",    sets:3, reps:"8–10", rest:"2 min", muscle:"Upper Chest", tip:"30–45° incline, lower dumbbells to chest level",               img:"https://i.imgur.com/QgM8iKK.gif"},
+        {name:"Cable Chest Fly",           sets:3, reps:"10–12",rest:"90s",  muscle:"Chest",    tip:"Slight bend in elbows throughout, squeeze at center",               img:"https://i.imgur.com/Zb8rZzA.gif"},
+        {name:"Tricep Rope Pushdown",      sets:3, reps:"10–12",rest:"90s",  muscle:"Triceps",  tip:"Elbows stay pinned at sides, fully extend at bottom",               img:"https://i.imgur.com/VKjnNvv.gif"},
+        {name:"Overhead Tricep Extension", sets:3, reps:"10–12",rest:"90s",  muscle:"Triceps",  tip:"Keep elbows close to head, full range of motion",                   img:"https://i.imgur.com/rNLiX6y.gif"},
+        {name:"Diamond Push-Ups",          sets:3, reps:"To failure",rest:"60s",muscle:"Triceps",tip:"Hands form a diamond shape, keep core tight",                     img:"https://i.imgur.com/bGqfQkK.gif"},
+      ]
+    },
+    "Back & Biceps": {
+      color:"#0097a7", emoji:"🏋️",
+      exercises:[
+        {name:"Pull-Ups / Lat Pulldown",   sets:4, reps:"6–8",  rest:"3 min", muscle:"Lats",     tip:"Full hang at bottom, pull elbows to hips",                         img:"https://i.imgur.com/pGHs2Kl.gif"},
+        {name:"Barbell Bent Over Row",     sets:4, reps:"8–10", rest:"2 min", muscle:"Back",     tip:"Hinge at hips 45°, pull bar to lower chest",                       img:"https://i.imgur.com/7n7ZFMX.gif"},
+        {name:"Seated Cable Row",          sets:3, reps:"10–12",rest:"90s",  muscle:"Mid Back",  tip:"Sit tall, pull to belly button, squeeze shoulder blades",           img:"https://i.imgur.com/4d4B3tG.gif"},
+        {name:"Single Arm Dumbbell Row",   sets:3, reps:"10–12",rest:"90s",  muscle:"Lats",     tip:"Support on bench, pull elbow past hip",                             img:"https://i.imgur.com/mW2bnwY.gif"},
+        {name:"Barbell Curl",              sets:3, reps:"8–10", rest:"90s",  muscle:"Biceps",   tip:"Elbows stay at sides, squeeze at top",                              img:"https://i.imgur.com/2GkQeGg.gif"},
+        {name:"Hammer Curl",               sets:3, reps:"10–12",rest:"60s",  muscle:"Biceps",   tip:"Neutral grip, alternate arms for control",                          img:"https://i.imgur.com/Rq8AYPZ.gif"},
+      ]
+    },
+    "Legs": {
+      color:"#f9a825", emoji:"🦵",
+      exercises:[
+        {name:"Barbell Back Squat",        sets:4, reps:"6–8",  rest:"3 min", muscle:"Quads/Glutes",tip:"Feet shoulder width, chest up, knees track over toes",         img:"https://i.imgur.com/nfFQiE4.gif"},
+        {name:"Romanian Deadlift",         sets:4, reps:"8–10", rest:"2 min", muscle:"Hamstrings", tip:"Soft knee bend, push hips back, bar stays close to legs",        img:"https://i.imgur.com/1NnT6kH.gif"},
+        {name:"Leg Press",                 sets:3, reps:"10–12",rest:"2 min", muscle:"Quads",      tip:"Feet hip width, don't lock knees at top",                        img:"https://i.imgur.com/8lHvBjS.gif"},
+        {name:"Walking Lunges",            sets:3, reps:"12 each",rest:"90s", muscle:"Quads/Glutes",tip:"Step forward, back knee grazes floor, stay upright",            img:"https://i.imgur.com/oZSrCnX.gif"},
+        {name:"Leg Curl",                  sets:3, reps:"12–15",rest:"90s",  muscle:"Hamstrings", tip:"Control the negative, full range of motion",                      img:"https://i.imgur.com/Y3O2hle.gif"},
+        {name:"Standing Calf Raise",       sets:4, reps:"15–20",rest:"60s",  muscle:"Calves",     tip:"Full stretch at bottom, pause at top",                            img:"https://i.imgur.com/vL6MhMm.gif"},
+      ]
+    },
+    "Shoulders": {
+      color:"#8e24aa", emoji:"🏅",
+      exercises:[
+        {name:"Overhead Press",            sets:4, reps:"6–8",  rest:"3 min", muscle:"Shoulders",  tip:"Bar at chin level, press straight up, lock out at top",          img:"https://i.imgur.com/jzrMSIx.gif"},
+        {name:"Lateral Raise",             sets:4, reps:"12–15",rest:"60s",  muscle:"Side Delts",  tip:"Slight bend in elbows, raise to shoulder height only",            img:"https://i.imgur.com/pCHkfcC.gif"},
+        {name:"Front Raise",               sets:3, reps:"12–15",rest:"60s",  muscle:"Front Delts", tip:"Alternate arms, raise to eye level",                             img:"https://i.imgur.com/lnlq2kl.gif"},
+        {name:"Face Pulls",                sets:3, reps:"15–20",rest:"60s",  muscle:"Rear Delts",  tip:"Pull to forehead, elbows high and wide",                         img:"https://i.imgur.com/dVvv9rZ.gif"},
+        {name:"Upright Row",               sets:3, reps:"10–12",rest:"90s",  muscle:"Traps",       tip:"Wide grip, elbows lead the movement",                            img:"https://i.imgur.com/9KtqGrH.gif"},
+        {name:"Arnold Press",              sets:3, reps:"10–12",rest:"90s",  muscle:"Full Shoulder",tip:"Rotate palms as you press, full rotation",                      img:"https://i.imgur.com/rNLiX6y.gif"},
+      ]
+    },
+    "Push": {
+      color:"#e53935", emoji:"⬆️",
+      exercises:[
+        {name:"Barbell Bench Press",       sets:4, reps:"6–8",  rest:"3 min", muscle:"Chest",      tip:"Arch back slightly, feet flat, bar to lower chest",              img:"https://i.imgur.com/5nCkOzM.gif"},
+        {name:"Overhead Press",            sets:4, reps:"6–8",  rest:"3 min", muscle:"Shoulders",  tip:"Core tight, press straight up",                                  img:"https://i.imgur.com/jzrMSIx.gif"},
+        {name:"Incline Dumbbell Press",    sets:3, reps:"8–10", rest:"2 min", muscle:"Upper Chest", tip:"Control the descent, full stretch at bottom",                   img:"https://i.imgur.com/QgM8iKK.gif"},
+        {name:"Lateral Raise",             sets:3, reps:"12–15",rest:"60s",  muscle:"Side Delts",  tip:"Lead with elbows, raise to shoulder height",                     img:"https://i.imgur.com/pCHkfcC.gif"},
+        {name:"Tricep Rope Pushdown",      sets:3, reps:"10–12",rest:"90s",  muscle:"Triceps",     tip:"Elbows pinned, fully extend at bottom",                          img:"https://i.imgur.com/VKjnNvv.gif"},
+        {name:"Overhead Tricep Extension", sets:3, reps:"10–12",rest:"90s",  muscle:"Triceps",     tip:"Keep elbows close to ears",                                      img:"https://i.imgur.com/rNLiX6y.gif"},
+      ]
+    },
+    "Pull": {
+      color:"#0097a7", emoji:"⬇️",
+      exercises:[
+        {name:"Pull-Ups / Lat Pulldown",   sets:4, reps:"6–8",  rest:"3 min", muscle:"Lats",       tip:"Dead hang start, drive elbows to hips",                          img:"https://i.imgur.com/pGHs2Kl.gif"},
+        {name:"Barbell Bent Over Row",     sets:4, reps:"8–10", rest:"2 min", muscle:"Back",        tip:"45° hinge, pull to lower chest",                                 img:"https://i.imgur.com/7n7ZFMX.gif"},
+        {name:"Face Pulls",               sets:3, reps:"15–20", rest:"60s",  muscle:"Rear Delts",  tip:"Pull to forehead level, elbows high",                            img:"https://i.imgur.com/dVvv9rZ.gif"},
+        {name:"Seated Cable Row",          sets:3, reps:"10–12",rest:"90s",  muscle:"Mid Back",    tip:"Tall spine, squeeze shoulder blades",                             img:"https://i.imgur.com/4d4B3tG.gif"},
+        {name:"Barbell Curl",              sets:3, reps:"8–10", rest:"90s",  muscle:"Biceps",      tip:"No swinging, squeeze at top",                                    img:"https://i.imgur.com/2GkQeGg.gif"},
+        {name:"Hammer Curl",               sets:3, reps:"10–12",rest:"60s",  muscle:"Biceps",      tip:"Neutral grip targets brachialis",                                img:"https://i.imgur.com/Rq8AYPZ.gif"},
+      ]
+    },
+    "Full Body": {
+      color:"#43a047", emoji:"⚡",
+      exercises:[
+        {name:"Barbell Back Squat",        sets:3, reps:"8–10", rest:"2 min", muscle:"Quads/Glutes",tip:"Full depth, chest up throughout",                               img:"https://i.imgur.com/nfFQiE4.gif"},
+        {name:"Barbell Bench Press",       sets:3, reps:"8–10", rest:"2 min", muscle:"Chest",       tip:"Control down, explosive press up",                              img:"https://i.imgur.com/5nCkOzM.gif"},
+        {name:"Barbell Bent Over Row",     sets:3, reps:"8–10", rest:"2 min", muscle:"Back",        tip:"Pull to belly button, squeeze at top",                          img:"https://i.imgur.com/7n7ZFMX.gif"},
+        {name:"Overhead Press",            sets:3, reps:"8–10", rest:"2 min", muscle:"Shoulders",   tip:"Press straight up, full lockout",                               img:"https://i.imgur.com/jzrMSIx.gif"},
+        {name:"Romanian Deadlift",         sets:3, reps:"10–12",rest:"2 min", muscle:"Hamstrings",  tip:"Feel the hamstring stretch, controlled descent",                img:"https://i.imgur.com/1NnT6kH.gif"},
+        {name:"Plank",                     sets:3, reps:"45–60s",rest:"60s", muscle:"Core",         tip:"Neutral spine, squeeze glutes and abs",                          img:"https://i.imgur.com/bGqfQkK.gif"},
+      ]
+    },
+    "Upper Body": {
+      color:"#1a7fe8", emoji:"💪",
+      exercises:[
+        {name:"Barbell Bench Press",       sets:4, reps:"8–10", rest:"2 min", muscle:"Chest",       tip:"Full range of motion, control the descent",                     img:"https://i.imgur.com/5nCkOzM.gif"},
+        {name:"Pull-Ups / Lat Pulldown",   sets:4, reps:"8–10", rest:"2 min", muscle:"Lats",        tip:"Retract shoulder blades at top",                                img:"https://i.imgur.com/pGHs2Kl.gif"},
+        {name:"Overhead Press",            sets:3, reps:"8–10", rest:"2 min", muscle:"Shoulders",   tip:"Brace core throughout the press",                               img:"https://i.imgur.com/jzrMSIx.gif"},
+        {name:"Seated Cable Row",          sets:3, reps:"10–12",rest:"90s",  muscle:"Mid Back",     tip:"Drive elbows back, squeeze at end",                             img:"https://i.imgur.com/4d4B3tG.gif"},
+        {name:"Lateral Raise",             sets:3, reps:"12–15",rest:"60s",  muscle:"Side Delts",   tip:"Slow and controlled, no swinging",                              img:"https://i.imgur.com/pCHkfcC.gif"},
+        {name:"Barbell Curl",              sets:3, reps:"10–12",rest:"60s",  muscle:"Biceps",       tip:"Supinate wrist at top for peak contraction",                    img:"https://i.imgur.com/2GkQeGg.gif"},
+      ]
+    },
+    "Lower Body": {
+      color:"#f9a825", emoji:"🦵",
+      exercises:[
+        {name:"Barbell Back Squat",        sets:4, reps:"8–10", rest:"2 min", muscle:"Quads/Glutes",tip:"Sit back and down, drive through heels",                        img:"https://i.imgur.com/nfFQiE4.gif"},
+        {name:"Romanian Deadlift",         sets:4, reps:"8–10", rest:"2 min", muscle:"Hamstrings",  tip:"Hinge at hips, feel the stretch",                               img:"https://i.imgur.com/1NnT6kH.gif"},
+        {name:"Leg Press",                 sets:3, reps:"12–15",rest:"90s",  muscle:"Quads",        tip:"Feet hip width, press through heels",                            img:"https://i.imgur.com/8lHvBjS.gif"},
+        {name:"Glute Bridge",              sets:3, reps:"15–20",rest:"60s",  muscle:"Glutes",       tip:"Drive hips up, squeeze glutes at top",                           img:"https://i.imgur.com/oZSrCnX.gif"},
+        {name:"Leg Curl",                  sets:3, reps:"12–15",rest:"60s",  muscle:"Hamstrings",   tip:"Control the negative, full range",                               img:"https://i.imgur.com/Y3O2hle.gif"},
+        {name:"Standing Calf Raise",       sets:3, reps:"15–20",rest:"60s",  muscle:"Calves",       tip:"Full stretch at bottom, pause at top",                           img:"https://i.imgur.com/vL6MhMm.gif"},
+      ]
+    },
+    "HIIT Circuit": {
+      color:"#e53935", emoji:"🔥",
+      exercises:[
+        {name:"Jump Squats",               sets:4, reps:"40s",  rest:"20s",  muscle:"Full Body",    tip:"Soft landing, chest up, explode upward",                         img:"https://i.imgur.com/nfFQiE4.gif"},
+        {name:"Mountain Climbers",         sets:4, reps:"40s",  rest:"20s",  muscle:"Core/Cardio",  tip:"Hips level, drive knees to chest",                               img:"https://i.imgur.com/bGqfQkK.gif"},
+        {name:"Burpees",                   sets:4, reps:"40s",  rest:"20s",  muscle:"Full Body",    tip:"Control the floor transition, explode up",                       img:"https://i.imgur.com/5nCkOzM.gif"},
+        {name:"High Knees",                sets:4, reps:"40s",  rest:"20s",  muscle:"Cardio/Core",  tip:"Drive knees to hip height, pump arms",                           img:"https://i.imgur.com/oZSrCnX.gif"},
+        {name:"Lateral Shuffles",          sets:4, reps:"40s",  rest:"20s",  muscle:"Legs/Agility", tip:"Stay low throughout, don't stand up between shuffles",           img:"https://i.imgur.com/Y3O2hle.gif"},
+        {name:"Plank to Push-Up",          sets:4, reps:"40s",  rest:"20s",  muscle:"Core/Chest",   tip:"Don't let hips rotate, alternate lead hand",                    img:"https://i.imgur.com/bGqfQkK.gif"},
+      ]
+    },
+  };
+
+  const WorkoutsScreen=()=>{
+    const [selectedDay, setSelectedDay] = useState(null);
+    const [selectedExercise, setSelectedExercise] = useState(null);
+    const [imgErrors, setImgErrors] = useState({});
+
+    if(!woPlan) return(
+      <div style={{textAlign:"center",padding:48}}>
+        <div style={{fontSize:48,marginBottom:16}}>🏋️</div>
+        <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:22,color:"#1a7fe8",letterSpacing:2}}>COMPLETE YOUR PROFILE FIRST</div>
+        <div style={{fontFamily:"'DM Mono',monospace",fontSize:11,color:"#5a7299",marginTop:8,lineHeight:1.8}}>Fill in your profile and select a goal to get your workout routines.</div>
+        <button onClick={()=>setScreen("profile")} style={{marginTop:20,padding:"12px 24px",borderRadius:10,background:"#1a7fe8",border:"none",color:"#ffffff",fontFamily:"'Bebas Neue',cursive",fontSize:16,letterSpacing:2,cursor:"pointer"}}>GO TO PROFILE</button>
+      </div>
+    );
+
+    const g = goalObj;
+
+    // Map schedule days to routine names
+    const getRoutineName = (label) => {
+      if(label.includes("Chest")) return "Chest & Triceps";
+      if(label.includes("Back")) return "Back & Biceps";
+      if(label.includes("Legs") && !label.includes("Shoulders")) return "Legs";
+      if(label.includes("Legs") && label.includes("Shoulders")) return "Legs";
+      if(label.includes("Shoulders") && !label.includes("Legs")) return "Shoulders";
+      if(label.includes("Push")) return "Push";
+      if(label.includes("Pull")) return "Pull";
+      if(label.includes("Full Body")) return "Full Body";
+      if(label.includes("Upper")) return "Upper Body";
+      if(label.includes("Lower")) return "Lower Body";
+      if(label.includes("HIIT")) return "HIIT Circuit";
+      return null;
+    };
+
+    const activeRoutine = selectedDay ? WORKOUT_ROUTINES[getRoutineName(selectedDay.label)] : null;
+
+    return(
+      <div>
+        <div style={{textAlign:"center",marginBottom:24}}>
+          <div style={{fontFamily:"'DM Mono',monospace",fontSize:10,color:g.color,letterSpacing:3,marginBottom:6}}>YOUR PROGRAM</div>
+          <h2 style={{fontFamily:"'Bebas Neue',cursive",fontSize:32,color:"#1a2e4a",letterSpacing:2,lineHeight:1}}>WORKOUT ROUTINES</h2>
+          <p style={{fontFamily:"'DM Mono',monospace",fontSize:11,color:"#5a7299",marginTop:6}}>Tap a day to see the full exercise routine</p>
+        </div>
+
+        {/* Weekly schedule selector */}
+        <div style={{display:"flex",flexDirection:"column",gap:8,marginBottom:24}}>
+          {woPlan.schedule.map((s,i)=>{
+            const routineName = getRoutineName(s.label);
+            const hasRoutine = !!routineName && !!WORKOUT_ROUTINES[routineName];
+            const isSelected = selectedDay?.day === s.day;
+            return(
+              <button key={i} onClick={()=>{ if(hasRoutine){ setSelectedDay(s); setSelectedExercise(null); }}}
+                style={{display:"flex",alignItems:"center",gap:12,padding:"12px 14px",borderRadius:12,
+                  border:`2px solid ${isSelected?s.color+"88":"#c5d8f5"}`,
+                  background:isSelected?`${s.color}12`:"#ffffff",
+                  cursor:hasRoutine?"pointer":"default",
+                  boxShadow:isSelected?"0 4px 16px rgba(26,100,200,.12)":"0 2px 8px rgba(26,100,200,.04)",
+                  transition:"all .2s",textAlign:"left"}}>
+                <div style={{width:44,height:44,borderRadius:10,background:isSelected?`${s.color}22`:"#f0f6ff",display:"flex",alignItems:"center",justifyContent:"center",fontSize:20,flexShrink:0}}>{s.icon}</div>
+                <div style={{flex:1}}>
+                  <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:16,color:isSelected?s.color:"#1a2e4a",letterSpacing:1}}>{s.day} — {s.label}</div>
+                  {hasRoutine && <div style={{fontFamily:"'DM Mono',monospace",fontSize:10,color:"#5a7299",marginTop:2}}>{WORKOUT_ROUTINES[routineName].exercises.length} exercises • Tap to view</div>}
+                  {!hasRoutine && s.type!=="rest" && <div style={{fontFamily:"'DM Mono',monospace",fontSize:10,color:"#5a7299",marginTop:2}}>Active recovery — light movement</div>}
+                  {s.type==="rest" && <div style={{fontFamily:"'DM Mono',monospace",fontSize:10,color:"#5a7299",marginTop:2}}>Rest & recover — essential for growth</div>}
+                </div>
+                {hasRoutine && <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:20,color:isSelected?s.color:"#c5d8f5"}}>›</div>}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Exercise routine detail */}
+        {selectedDay && activeRoutine && (
+          <div style={{animation:"fadeUp .4s ease forwards"}}>
+            <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:16,padding:"14px 16px",background:`linear-gradient(135deg,${activeRoutine.color},${activeRoutine.color}cc)`,borderRadius:14}}>
+              <div style={{fontSize:28}}>{activeRoutine.emoji}</div>
+              <div>
+                <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:22,color:"#ffffff",letterSpacing:2}}>{selectedDay.label}</div>
+                <div style={{fontFamily:"'DM Mono',monospace",fontSize:10,color:"rgba(255,255,255,.8)"}}>
+                  {activeRoutine.exercises.length} exercises • {activeRoutine.exercises.reduce((a,e)=>a+e.sets,0)} total sets
+                </div>
+              </div>
+            </div>
+
+            <div style={{display:"flex",flexDirection:"column",gap:10}}>
+              {activeRoutine.exercises.map((ex,i)=>{
+                const isOpen = selectedExercise===i;
+                return(
+                  <div key={i} style={{background:"#ffffff",border:`1px solid ${isOpen?activeRoutine.color+"44":"#c5d8f5"}`,borderRadius:14,overflow:"hidden",boxShadow:"0 2px 8px rgba(26,100,200,.06)",transition:"all .3s"}}>
+                    {/* Exercise header */}
+                    <button onClick={()=>setSelectedExercise(isOpen?null:i)}
+                      style={{width:"100%",padding:"14px 16px",background:"transparent",border:"none",cursor:"pointer",display:"flex",alignItems:"center",gap:12,textAlign:"left"}}>
+                      <div style={{width:32,height:32,borderRadius:8,background:isOpen?activeRoutine.color:"#f0f6ff",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,transition:"all .3s"}}>
+                        <span style={{fontFamily:"'Bebas Neue',cursive",fontSize:14,color:isOpen?"#ffffff":activeRoutine.color}}>{i+1}</span>
+                      </div>
+                      <div style={{flex:1}}>
+                        <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:16,color:"#1a2e4a",letterSpacing:1}}>{ex.name}</div>
+                        <div style={{fontFamily:"'DM Mono',monospace",fontSize:10,color:"#5a7299",marginTop:2}}>{ex.muscle}</div>
+                      </div>
+                      <div style={{display:"flex",gap:8,flexShrink:0}}>
+                        <div style={{textAlign:"center",background:"#f0f6ff",borderRadius:8,padding:"4px 8px"}}>
+                          <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:15,color:activeRoutine.color}}>{ex.sets}</div>
+                          <div style={{fontFamily:"'DM Mono',monospace",fontSize:8,color:"#5a7299"}}>SETS</div>
+                        </div>
+                        <div style={{textAlign:"center",background:"#f0f6ff",borderRadius:8,padding:"4px 8px"}}>
+                          <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:15,color:activeRoutine.color}}>{ex.reps}</div>
+                          <div style={{fontFamily:"'DM Mono',monospace",fontSize:8,color:"#5a7299"}}>REPS</div>
+                        </div>
+                        <div style={{textAlign:"center",background:"#f0f6ff",borderRadius:8,padding:"4px 8px"}}>
+                          <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:11,color:activeRoutine.color,lineHeight:1.2}}>{ex.rest}</div>
+                          <div style={{fontFamily:"'DM Mono',monospace",fontSize:8,color:"#5a7299"}}>REST</div>
+                        </div>
+                      </div>
+                      <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:18,color:isOpen?activeRoutine.color:"#c5d8f5",transition:"all .3s",transform:isOpen?"rotate(90deg)":"rotate(0deg)"}}>›</div>
+                    </button>
+
+                    {/* Expanded detail */}
+                    {isOpen && (
+                      <div style={{padding:"0 16px 16px",borderTop:`1px solid ${activeRoutine.color}22`}}>
+                        {/* GIF */}
+                        <div style={{background:"#f0f6ff",borderRadius:10,overflow:"hidden",marginBottom:12,height:180,display:"flex",alignItems:"center",justifyContent:"center"}}>
+                          {!imgErrors[i] ? (
+                            <img src={ex.img} alt={ex.name}
+                              onError={()=>setImgErrors(prev=>({...prev,[i]:true}))}
+                              style={{width:"100%",height:"100%",objectFit:"cover"}}/>
+                          ) : (
+                            <div style={{textAlign:"center",padding:20}}>
+                              <div style={{fontSize:40,marginBottom:8}}>🏋️</div>
+                              <div style={{fontFamily:"'DM Mono',monospace",fontSize:11,color:"#5a7299"}}>{ex.name}</div>
+                              <div style={{fontFamily:"'DM Mono',monospace",fontSize:9,color:"#7a9abf",marginTop:4}}>Search "{ex.name}" on YouTube for a demo</div>
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Tip */}
+                        <div style={{display:"flex",gap:10,background:"#f0f6ff",borderRadius:10,padding:"10px 12px",marginBottom:12}}>
+                          <span style={{color:activeRoutine.color,fontSize:14,flexShrink:0}}>💡</span>
+                          <span style={{fontFamily:"'DM Mono',monospace",fontSize:11,color:"#2c4a6e",lineHeight:1.6}}>{ex.tip}</span>
+                        </div>
+
+                        {/* Set tracker */}
+                        <div style={{fontFamily:"'DM Mono',monospace",fontSize:9,color:"#5a7299",letterSpacing:2,marginBottom:8}}>SET TRACKER</div>
+                        <div style={{display:"flex",gap:6}}>
+                          {Array.from({length:ex.sets},(_,s)=>(
+                            <div key={s} style={{flex:1,background:"#f0f6ff",border:`1px solid ${activeRoutine.color}33`,borderRadius:8,padding:"8px 4px",textAlign:"center"}}>
+                              <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:14,color:activeRoutine.color}}>SET {s+1}</div>
+                              <div style={{fontFamily:"'DM Mono',monospace",fontSize:9,color:"#5a7299",marginTop:2}}>{ex.reps}</div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Progressive overload reminder */}
+            <div style={{background:"#f0f6ff",border:`1px solid ${g.color}33`,borderLeft:`3px solid ${g.color}`,borderRadius:12,padding:"14px 16px",marginTop:16}}>
+              <div style={{fontFamily:"'DM Mono',monospace",fontSize:9,color:g.color,letterSpacing:2,marginBottom:8}}>PROGRESSIVE OVERLOAD</div>
+              <div style={{fontFamily:"'DM Mono',monospace",fontSize:11,color:"#5a7299",lineHeight:1.6}}>
+                Each week aim to either add weight, add a rep, or reduce rest time. Track your weights to ensure consistent progress session to session.
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  };
+
   const TimerScreen=()=>{
     const allowed=woPlan
       ?[...(woPlan.hiitEnabled?["hiit"]:[]),  ...(woPlan.absEnabled?["abs"]:[]) ]
@@ -1338,7 +1622,7 @@ export default function FitnessCompanion() {
   };
 
   // ── RENDER ───────────────────────────────────────────────────
-  const screenContent={profile:<ProfileScreen/>, goals:<GoalsScreen/>, results:<ResultsScreen/>, meals:<MealsScreen/>, timer:<TimerScreen/>};
+  const screenContent={profile:<ProfileScreen/>, goals:<GoalsScreen/>, results:<ResultsScreen/>, workouts:<WorkoutsScreen/>, meals:<MealsScreen/>, timer:<TimerScreen/>};
 
   return(
     <>
