@@ -1326,7 +1326,7 @@ export default function FitnessCompanion() {
     "Chest & Triceps": {
       color:"#e53935", emoji:"💪",
       exercises:[
-        {name:"Barbell Bench Press",       sets:4, reps:"6–8",  rest:"3 min", muscle:"Chest",    tip:"Keep shoulder blades pinched together, feet flat on floor",         img:"/exercises/plank.gif"},
+        {name:"Barbell Bench Press",       sets:4, reps:"6–8",  rest:"3 min", muscle:"Chest",    tip:"Keep shoulder blades pinched together, feet flat on floor",         img:"/exercises/bench-press.gif"},
         {name:"Incline Dumbbell Press",    sets:3, reps:"8–10", rest:"2 min", muscle:"Upper Chest", tip:"30–45° incline, lower dumbbells to chest level",               img:"/exercises/incline-press.gif"},
         {name:"Cable Chest Fly",           sets:3, reps:"10–12",rest:"90s",  muscle:"Chest",    tip:"Slight bend in elbows throughout, squeeze at center",               img:"/exercises/chest-fly.gif"},
         {name:"Tricep Rope Pushdown",      sets:3, reps:"10–12",rest:"90s",  muscle:"Triceps",  tip:"Elbows stay pinned at sides, fully extend at bottom",               img:"/exercises/tricep-pushdown.gif"},
@@ -1553,11 +1553,11 @@ export default function FitnessCompanion() {
                     {isOpen && (
                       <div style={{padding:"0 16px 16px",borderTop:`1px solid ${activeRoutine.color}22`}}>
                         {/* GIF */}
-                        <div style={{background:"#f0f6ff",borderRadius:10,overflow:"hidden",marginBottom:12,height:180,display:"flex",alignItems:"center",justifyContent:"center"}}>
+                        <div style={{background:"#f0f6ff",borderRadius:10,overflow:"hidden",marginBottom:12,height:200,display:"flex",alignItems:"center",justifyContent:"center",padding:"4px"}}>
                           {!imgErrors[i] ? (
                             <img src={ex.img} alt={ex.name}
                               onError={()=>setImgErrors(prev=>({...prev,[i]:true}))}
-                              style={{width:"100%",height:"100%",objectFit:"cover"}}/>
+                              style={{width:"100%",height:"100%",objectFit:"contain",padding:"8px",background:"#f0f6ff"}}/>
                           ) : (
                             <div style={{textAlign:"center",padding:20}}>
                               <div style={{fontSize:40,marginBottom:8}}>🏋️</div>
